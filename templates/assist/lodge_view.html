@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <!-- View for assistance request for roadside assist program. -->
+        <title>Request Assistance</title>
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin=""/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            #leafletmap {
+                height: 400px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>
+                Lodge
+                <small class='text-muted'>Make an assistance request</small>
+            </h2>
+
+            <p>So you've had an incident. Not to worry! Please fill out the form below and we will quickly scramble the closest repair expert to assist you.</p>
+            <form action="/assist/lodge" method="post">
+            
+            </form>
+
+            <h3>Select Incident Location</h3>
+            <label>Address: </label><input type='text' placeholder='Address' id="addressInput" >
+            <input type='submit' value='Go to' onClick='gotoAddress()'>
+            <div id="leafletmap"></div>
+        </div>
+
+        <script>
+
+            var theMap = L.map('leafletmap').setView([-34, 150], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(theMap);
+
+            var marker = L.marker([-34.4050554, 150.8783465], {"draggable":true}).addTo(theMap)
+                        .bindPopup('<b>Please</b> move this marker to your exact breakdown location. <span style="font-size: 12px">Thanks!</span>')
+                        .openPopup();
+
+            var latitude = marker.getLatLng()['lat'];
+
+            function gotoAddress() {
+                var newAddress = document.getElementById("addressInput").value;
+                var query = 'https://api.opencagedata.com/geocode/v1/json?q='+newAddress + "&key=6570588bba6b4f288c8315c735b08c59";
+                console.log(query);
+
+                $.get(query, function(data, statustext, xhr){
+                    console.log(xhr.status);
+                    if (xhr.status == 200) {
+                        // Data is now a JSON object that we can manipulate
+                        var latitude = data['results']['0']['geometry']['lat'];
+                        var longitude = data['results']['0']['geometry']['lng'];
+                        var latlng = L.latLng(latitude, longitude);
+                        theMap.panTo(latlng);
+                        marker.setLatLng(latlng);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
