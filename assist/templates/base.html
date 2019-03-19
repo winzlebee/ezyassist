@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- View for assistance request for roadside assist program. -->
-        <title>Request Assistance</title>
+        <title>{{ pageinfo.title}} </title>
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -19,7 +19,7 @@
     <body>
         <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">EzyAssist</a>
+        <a class="navbar-brand" href="{% url 'index' %}">EzyAssist</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -28,13 +28,13 @@
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             {% if user.is_authenticated %}
             <li class="nav-item {% if active == 'home' %}active{% endif %}">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/assist/dash">Home</a>
             </li>
             <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
-                <a class="nav-link" href="#">Lodge</a>
+                <a class="nav-link" href="/assist/lodge">Lodge</a>
             </li>
             <li class="nav-item {% if active == 'providers' %}active{% endif %}">
-                <a class="nav-link" href="#">Providers</a>
+                <a class="nav-link" href="/assist/providers">Providers</a>
             </li>
             {% endif %}
             </ul>
@@ -46,7 +46,7 @@
                     <a class="nav-link" href="#" onclick='showLogin()'>Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="/signup">Signup</a>
+                    <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="{% url 'signup' %}">Signup</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" id='loginForm' method='post' action="{% url 'login' %}" style='display: none;'>

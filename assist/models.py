@@ -1,6 +1,10 @@
 from django.conf import settings
 from django.db import models
 
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # All the models that are required for the maintenance booking engine are defined here.
 # For those not familiar with Django, all data sets are assosciated with models
 
@@ -49,3 +53,18 @@ class PricingModel(models.Model):
 
     def __str__(self):
         return self.name
+
+class UserProfileModel(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=50, blank=True)
+    isServicer = models.BooleanField(default=False)
+    subscription = models.ForeignKey(PricingModel, on_delete=models.CASCADE, blank=True, null=True)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfileModel.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

@@ -13,6 +13,9 @@ def index(request):
 
     context = {
         'models': pricing_models,
+        'pageinfo': {
+            'title': "EzyAssist"
+        }
     }
 
     return HttpResponse(indexTemplate.render(context, request))
@@ -32,8 +35,25 @@ def login_view(request):
     else:
         return HttpResponseRedirect('/')
     
+def signup_view(request):
+    signup_template = loader.get_template('signup_view.html')
+    pricing_models = PricingModel.objects.order_by('yearlyPrice')
+
+    context = {
+        'pricings': pricing_models,
+        'pageinfo': {
+            'title': "EzyAssist - Signup"
+        }
+    }
+
+    return HttpResponse(signup_template.render(context, request))
+
 @login_required
 def lodge(request):
     template = loader.get_template('lodge_view.html')
-    context = {}
+    context = {
+        'pageinfo': {
+            'title': "EzyAssist - Lodge"
+        }
+    }
     return HttpResponse(template.render(context, request))

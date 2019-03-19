@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = 'assist/lodge'
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = 'assist/home'
 
 # Application definition
 
