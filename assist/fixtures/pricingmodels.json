@@ -1,0 +1,22 @@
+[
+    {
+      "model": "assist.PricingModel",
+      "pk": 1,
+      "fields": {
+        "name": "Super Assist",
+        "yearlyPrice": 49,
+        "calloutFee": 30,
+        "numCallouts": 3
+      }
+    },
+    {
+      "model": "assist.PricingModel",
+      "pk": 2,
+      "fields": {
+        "name": "Free Cruise",
+        "yearlyPrice": 0,
+        "calloutFee": 45,
+        "numCallouts": 0
+      }
+    }
+  ]

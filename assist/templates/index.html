@@ -16,50 +16,23 @@
 </div>
 
   <div class="card-deck mb-3 text-center">
+
+    {% for model in models %}
     <div class="card mb-4 shadow-sm">
       <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Free</h4>
+        <h4 class="my-0 font-weight-normal">{{ model.name }}</h4>
       </div>
       <div class="card-body">
-        <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+        <h1 class="card-title pricing-card-title">${{ model.yearlyPrice }}<small class="text-muted">/ year</small></h1>
         <ul class="list-unstyled mt-3 mb-4">
-          <li>10 users included</li>
-          <li>2 GB of storage</li>
-          <li>Email support</li>
-          <li>Help center access</li>
+          <li>{% if model.numCallouts > 0 %} {{model.numCallouts}} Free Callouts{% else %} Unlimited Callouts{% endif %}*</li>
+          <li>Verified Repair Partners</li>
+          <li>1 Hour Guarantee</li>
         </ul>
-        <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+        <small class='mb-3 text-muted'>* ${{ model.calloutFee }} a callout after free callouts used.</small>
+        <button type="button" class="btn btn-lg btn-block {% if model.yearlyPrice > 0 %} btn-primary">Sign up {% else %} btn-outline-primary">Sign up for free {% endif %}</button>
       </div>
     </div>
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Pro</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>20 users included</li>
-          <li>10 GB of storage</li>
-          <li>Priority email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
-      </div>
-    </div>
-    <div class="card mb-4 shadow-sm">
-      <div class="card-header">
-        <h4 class="my-0 font-weight-normal">Enterprise</h4>
-      </div>
-      <div class="card-body">
-        <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>
-        <ul class="list-unstyled mt-3 mb-4">
-          <li>30 users included</li>
-          <li>15 GB of storage</li>
-          <li>Phone and email support</li>
-          <li>Help center access</li>
-        </ul>
-        <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 {% endblock %}

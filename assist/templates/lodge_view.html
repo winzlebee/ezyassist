@@ -30,7 +30,8 @@ crossorigin=""></script>
 
     <p>Please fill out the form below and we will quickly scramble the closest repair expert to assist you!</p>
 
-    <form id='formSubmitIncident' action="{% url 'lodge' %}" method="post">
+    <form id='formSubmitIncident' action="{% url 'lodge' %}" method="POST">
+        {% csrf_token %}
         <div class="form-group">
             <label for='infoText'>Incident Details</label>
             <textarea class="form-control" id='infoText' name='infoText'></textarea>

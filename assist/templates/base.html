@@ -24,14 +24,14 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse order-1 dual-collapse2" id="navbarNav">
-
+            {{ request.path.basename }}
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             {% if user.is_authenticated %}
             <li class="nav-item {% if active == 'home' %}active{% endif %}">
                 <a class="nav-link" href="#">Home</a>
             </li>
             <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
-                <a class="nav-link" href="#">Lodge Incident</a>
+                <a class="nav-link" href="#">Lodge</a>
             </li>
             <li class="nav-item {% if active == 'providers' %}active{% endif %}">
                 <a class="nav-link" href="#">Providers</a>
@@ -49,14 +49,25 @@
                     <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="/signup">Signup</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" id='loginForm' style='display: none;'>
-                <input class="form-control mr-sm-2" type="text" placeholder="Username">
-                <input class="form-control mr-sm-2" type="password" placeholder="Password">
-                <div class="btn-group" role="group" aria-label="Basic example">
+            <form class="form-inline my-2 my-lg-0" id='loginForm' method='post' action="{% url 'login' %}" style='display: none;'>
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" name="username" type="text" placeholder="Username">
+                <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password">
+                <div class="btn-group" role="group" aria-label="Login">
                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
                     <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="reverseLogin()">Cancel</button>
+                    <input type="hidden" name="next" value="{{ next }}" />
                 </div>
             </form>
+            {% else %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id='right_btns'>
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+            </ul>
             {% endif %}
         </div>
         </nav>
@@ -70,32 +81,18 @@
                 <small class="d-block mb-3 text-muted">&copy; 2017-2019</small>
             </div>
             <div class="col-6 col-md">
-                <h5>Features</h5>
-                <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Cool stuff</a></li>
-                <li><a class="text-muted" href="#">Random feature</a></li>
-                <li><a class="text-muted" href="#">Team feature</a></li>
-                <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                <li><a class="text-muted" href="#">Another one</a></li>
-                <li><a class="text-muted" href="#">Last time</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Resources</h5>
-                <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Resource</a></li>
-                <li><a class="text-muted" href="#">Resource name</a></li>
-                <li><a class="text-muted" href="#">Another resource</a></li>
-                <li><a class="text-muted" href="#">Final resource</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
                 <h5>About</h5>
                 <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Team</a></li>
-                <li><a class="text-muted" href="#">Locations</a></li>
-                <li><a class="text-muted" href="#">Privacy</a></li>
-                <li><a class="text-muted" href="#">Terms</a></li>
+                <li><a class="text-muted" href="#">Information</a></li>
+                <li><a class="text-muted" href="#">Development</a></li>
+                <li><a class="text-muted" href="#">Terms and Conditions</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Links</h5>
+                <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">University of Wollongong</a></li>
+                <li><a class="text-muted" href="#">Course Code</a></li>
                 </ul>
             </div>
             </div>

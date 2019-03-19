@@ -40,3 +40,12 @@ class AssistanceReview(models.Model):
     )
     
     star_rating = models.IntegerField(default=5)
+
+class PricingModel(models.Model):
+    name = models.CharField(max_length=50)
+    yearlyPrice = models.DecimalField(decimal_places=2, max_digits=5)
+    calloutFee = models.DecimalField(decimal_places=2, max_digits=5)
+    numCallouts = models.IntegerField()
+
+    def __str__(self):
+        return self.name
