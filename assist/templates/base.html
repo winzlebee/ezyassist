@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- View for assistance request for roadside assist program. -->
+        <title>Request Assistance</title>
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        {% block scripts %}
+        {% endblock %}
+    </head>
+    <body>
+        <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">EzyAssist</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-1 dual-collapse2" id="navbarNav">
+
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            {% if user.is_authenticated %}
+            <li class="nav-item {% if active == 'home' %}active{% endif %}">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
+                <a class="nav-link" href="#">Lodge Incident</a>
+            </li>
+            <li class="nav-item {% if active == 'providers' %}active{% endif %}">
+                <a class="nav-link" href="#">Providers</a>
+            </li>
+            {% endif %}
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            {% if not user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id='right_btns'>
+                    <a class="nav-link" href="#" onclick='showLogin()'>Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="/signup">Signup</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id='loginForm' style='display: none;'>
+                <input class="form-control mr-sm-2" type="text" placeholder="Username">
+                <input class="form-control mr-sm-2" type="password" placeholder="Password">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="reverseLogin()">Cancel</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+
+        <script>
+            function showLogin() {
+                $("#loginForm").show();
+                $('#right_btns').hide();
+                $('#signup_btns').hide();
+            }
+
+            function reverseLogin() {
+                $("#loginForm").hide();
+                $('#right_btns').show();
+                $('#signup_btns').show();
+            }
+        </script>
+        </div>
+    </body>
+</html>

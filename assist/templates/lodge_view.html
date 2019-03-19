@@ -1,0 +1,109 @@
+
+{% extends "base.html" %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+crossorigin=""/>
+
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+crossorigin=""></script>
+<style>
+    #leafletmap {
+        height: 400px;
+        padding-top: 75%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .lodgeArea {
+        padding-top: 40px;
+        padding-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class='lodgeArea'>
+    <h2>Lodge</h2>
+
+    <p>Please fill out the form below and we will quickly scramble the closest repair expert to assist you!</p>
+
+    <form id='formSubmitIncident' action="{% url 'lodge' %}" method="post">
+        <div class="form-group">
+            <label for='infoText'>Incident Details</label>
+            <textarea class="form-control" id='infoText' name='infoText'></textarea>
+            <small id="infoHelp" class="form-text text-muted">Please be as detailed as possible.</small>
+        </div>
+    </form>
+
+    <h3>Select Incident Location</h3>
+    <form class='form-inline'>
+        <div class='form-group'>
+            <label for='addressInput' class='sr-only'>Address</label>
+            <input type='text' placeholder='Enter Address' id="addressInput" class='form-control'>
+        </div>
+        <button type='button' onClick='gotoAddress()' class='btn btn-primary'>Go</button>
+    </form>
+    <div id='addressWarning' style='display:none' class="alert alert-warning" role="alert">
+        Couldn't find address!
+    </div>
+    <div id="leafletmap"></div>
+    <input type='submit' value='Submit Request' class='btn btn-primary' form='formSubmitIncident' >
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script>
+
+    var theMap = L.map('leafletmap').setView([-34, 150], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(theMap);
+
+    var marker = L.marker([-34.4050554, 150.8783465], {"draggable":true}).addTo(theMap)
+                .bindPopup('<b>Please</b> move this marker to your exact breakdown location. <span style="font-size: 12px">Thanks!</span>')
+                .openPopup();
+
+    var latitude = marker.getLatLng()['lat'];
+
+    $("#formSubmitIncident").submit( function(eventObj) {
+        $('<input />').attr('type', 'hidden')
+            .attr('name', 'lat')
+            .attr('value', marker.getLatLng()['lat'])
+            .appendTo('#formSubmitIncident');
+
+        $('<input />').attr('type', 'hidden')
+            .attr('name', 'lng')
+            .attr('value', marker.getLatLng()['lng'])
+            .appendTo('#formSubmitIncident');
+
+        return true;
+    });
+
+    function gotoAddress() {
+        var newAddress = document.getElementById("addressInput").value;
+        var query = 'https://api.opencagedata.com/geocode/v1/json?q='+newAddress + "&key=6570588bba6b4f288c8315c735b08c59";
+        console.log(query);
+
+        $.get(query, function(data, statustext, xhr){
+            console.log(xhr.status);
+            if (xhr.status == 200 && data['results']['0']) {
+                // Data is now a JSON object that we can manipulate
+                var latitude = data['results']['0']['geometry']['lat'];
+                var longitude = data['results']['0']['geometry']['lng'];
+                var latlng = L.latLng(latitude, longitude);
+                theMap.panTo(latlng);
+                marker.setLatLng(latlng);
+                $("#addressWarning").hide();
+            } else {
+                $("#addressWarning").fadeIn(1000);
+            }
+        });
+    }
+</script>
+
+{% endblock %}
