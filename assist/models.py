@@ -58,13 +58,4 @@ class UserProfileModel(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=50, blank=True)
     isServicer = models.BooleanField(default=False)
-    subscription = models.ForeignKey(PricingModel, on_delete=models.CASCADE, blank=True, null=True)
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfileModel.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    subscription = models.IntegerField(default=0)

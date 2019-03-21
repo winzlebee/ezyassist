@@ -27,8 +27,8 @@
             {{ request.path.basename }}
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             {% if user.is_authenticated %}
-            <li class="nav-item {% if active == 'home' %}active{% endif %}">
-                <a class="nav-link" href="/assist/dash">Home</a>
+            <li class="nav-item {% if active == 'dash' %}active{% endif %}">
+                <a class="nav-link" href="/assist/dash">Dash</a>
             </li>
             <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
                 <a class="nav-link" href="/assist/lodge">Lodge</a>
@@ -39,9 +39,14 @@
             {% endif %}
             </ul>
         </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarNav">
             {% if not user.is_authenticated %}
             <ul class="navbar-nav ml-auto">
+                {% if isFailure %}
+                <li class="nav_item p-2 alert alert-danger">
+                    Invalid Username/Password
+                </li>
+                {% endif %}
                 <li class="nav-item" id='right_btns'>
                     <a class="nav-link" href="#" onclick='showLogin()'>Login</a>
                 </li>
@@ -65,7 +70,7 @@
                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                 </li>
             </ul>
             {% endif %}

@@ -43,7 +43,7 @@ crossorigin=""></script>
     <form class='form-inline'>
         <div class='form-group'>
             <label for='addressInput' class='sr-only'>Address</label>
-            <input type='text' placeholder='Enter Address' id="addressInput" class='form-control'>
+            <input type='text' placeholder='Enter Address' id="addressInput" value="{{ userProfile.address }}" class='form-control'>
         </div>
         <button type='button' onClick='gotoAddress()' class='btn btn-primary'>Go</button>
     </form>
@@ -57,7 +57,7 @@ crossorigin=""></script>
 
 <script>
 
-    var theMap = L.map('leafletmap').setView([-34, 150], 13);
+    var theMap = L.map('leafletmap').setView([-34.4050554, 150.8783465], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(theMap);
 
@@ -101,6 +101,8 @@ crossorigin=""></script>
             }
         });
     }
+
+    gotoAddress();
 </script>
 
 {% endblock %}

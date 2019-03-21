@@ -59,7 +59,7 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     {% for pricing in pricings %}
-                    <li class="list-group-item"><input class="form-check-input" type="radio" name="pricing" value="{{ pricing.id }}" required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                    <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
                     {% endfor %}
                 </ul>
             </div>
