@@ -37,7 +37,7 @@ def login_view(request):
 
     if user is not None:
         auth.login(request, user)
-        return HttpResponseRedirect('/assist/lodge')
+        return HttpResponseRedirect('/assist/dash')
     else:
         return HttpResponseRedirect('/assist?failure=1')
 
@@ -74,6 +74,15 @@ def signup_view(request):
     return HttpResponse(signup_template.render(context, request))
 
 @login_required
+def dash_view(request):
+    template = loader.get_template('dash_view.html')
+    userInstance = request.user
+
+    context = {'user' : userInstance}
+
+    return HttpResponse(template.render(context, request))
+
+@login_required
 def profile_view(request):
     template = loader.get_template('profile_view.html')
     userInstance = UserProfileModel.objects.get(user=request.user)
@@ -87,7 +96,7 @@ def profile_view(request):
         profile_form = ProfileForm(request.POST, instance=userInstance)
         if profile_form.is_valid():
             profile = profile_form.save()
-            return HttpResponseRedirect('/assist/lodge')
+            return HttpResponseRedirect('/assist/dash')
         else:
             context['hasErrors'] = True
 

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class='p-5'>
+    <h1 class='display-2'>Dashboard</h1>
+    <h2>You currently have 0 lodged assistance requests.</h2>
+    <div class='row'>
+        <div class='col-sm-6'>
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Lodge a Request</h5>
+                    <p class='card-text'>Tell us your location and we'll send you assistance</p>
+                    <a href="{% url 'lodge' %}" class='btn btn-primary'>Lodge</a>
+                </div>
+            </div>
+        </div>
+        <div class='col-sm-6'>
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Your Account</h5>
+                    <p class='card-text'>Check out how much you've called us, and what you've done in the past.</p>
+                    <a href="{% url 'lodge' %}" class='btn btn-secondary'>View &raquo;&raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
