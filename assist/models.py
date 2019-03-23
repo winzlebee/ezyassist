@@ -27,6 +27,14 @@ class AssistanceRequest(models.Model):
     def __str__(self):
         return self.creator.email + "\t" + self.request_details
     
+class AssistanceApproval(models.Model):
+    repairer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+
+    request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE)
+
 # A review left for a user (either from a customer or an assistance professional)
 class AssistanceReview(models.Model):
     creator = models.ForeignKey(
