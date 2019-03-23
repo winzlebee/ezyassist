@@ -55,7 +55,7 @@ class PricingModel(models.Model):
         return self.name
 
 class UserProfileModel(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, blank=True)
     isServicer = models.BooleanField(default=False)
     subscription = models.IntegerField(default=0)
