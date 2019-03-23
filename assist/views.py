@@ -89,7 +89,8 @@ def profile_view(request):
 
     context = {
         'form':ProfileForm(instance=userInstance),
-        'hasErrors':False
+        'hasErrors':False,
+        'pricings' : PricingModel.objects.order_by('yearlyPrice'),
     }
 
     if request.method == 'POST':

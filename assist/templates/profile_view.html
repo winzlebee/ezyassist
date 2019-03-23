@@ -5,8 +5,22 @@
 <form action='{% url 'profile' %}' method="POST">
     {% csrf_token %}
     <div class='row'>
-        <div class='col-sm p-5'>
-            {{ form.as_table }}
+        <div class='col p-5'>
+            <div class='form-group'>
+                {% if form.address.errors %}<div class='alert alert-danger' role='alert'>{{ form.address.errors }}</div>{% endif %}
+                <label for="{{ form.address.id_for_label }}">Address</label>
+                {{ form.address }}
+            </div>
+            <div class="card" id='plansCard' style="width: 18rem;">
+                <div class="card-header">
+                    Change Plan
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for pricing in pricings %}
+                    <li class="list-group-item"><input class="form-check-input" type="radio" name="{{ form.subscription.html_name }}" value="{{ pricing.id }}" {% if pricing.id == form.subscription.initial %}checked {% endif %}required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
     {% if hasErrors %}
