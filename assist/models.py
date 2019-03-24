@@ -62,6 +62,7 @@ class PricingModel(models.Model):
     def __str__(self):
         return self.name
 
+# Represents a user profile model, which will be attached to all user models.
 class UserProfileModel(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, blank=True)
