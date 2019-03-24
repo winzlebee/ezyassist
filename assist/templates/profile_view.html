@@ -11,6 +11,7 @@
                 <label for="{{ form.address.id_for_label }}">Address</label>
                 {{ form.address }}
             </div>
+            {% if not form.isServicer %}
             <div class="card" id='plansCard' style="width: 18rem;">
                 <div class="card-header">
                     Change Plan
@@ -21,6 +22,10 @@
                     {% endfor %}
                 </ul>
             </div>
+            {% else %}
+            <input type="hidden" name="{{ form.subscription.html_name }}" value="0" />
+            <a href="{{ userProfile.optionalDocument.document.url }}" class='btn btn-primary'>View Documentation &raquo;</a>
+            {% endif %}
         </div>
     </div>
     {% if hasErrors %}

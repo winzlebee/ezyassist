@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<form action='{% url 'signup' %}' method="POST">
+<form action='{% url 'signup' %}' method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
     <div class='row'>
         <div class='col-sm p-5'>
@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label>I am a...</label><br />
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" selected>
+                    <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" checked>
                     <label class="form-check-label" for="inlineRadio1">Customer</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -59,15 +59,26 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     {% for pricing in pricings %}
-                    <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                    <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
                     {% endfor %}
                 </ul>
+            </div>
+            <div id='repairerCard' style='display: none;' class="card">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name='document'>
+                    <label class="custom-file-label" for="customFile">Upload a document</label>
+                    <small id="fileHelpBlock" class="form-text text-muted">
+                    Please upload a file indicating all available repair qualifications.
+                    </small>
+                </div>
             </div>
         </div>
     </div>
     {% if hasErrors %}
     <div class="alert alert-danger" role="alert">
      {{ errors }}
+     {{ profileErrors }}
+     {{ fileErrors }}
     </div>
     {% endif %}
   <button type="submit" class="btn btn-primary">Submit</button>
@@ -75,10 +86,17 @@
   <script>
     $('#repairerBox').on('click', function(e) {
         $('#plansCard').fadeOut(500);
+        $('#repairerCard').fadeIn(500);
     });
 
     $('#customerBox').on('click', function(e) {
         $('#plansCard').fadeIn(500);
+        $('#repairerCard').fadeOut(500);
+    });
+
+    $('.custom-file-input').on('change', function() { 
+        let fileName = $(this).val().split('\\').pop(); 
+        $(this).next('.custom-file-label').html(fileName); 
     });
   </script>
 </form>

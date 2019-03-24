@@ -3,7 +3,7 @@
 - [x] Create user management system
 - [x] Modification of plans on admin panel
 - [x] Dashboard & Lodge view
-- [ ] Repairers upload their qualifications (or submit a URL)
+- [x] Repairers upload their qualifications (or submit a URL)
 - [ ] Customers can optionally supply their registration information
 - [ ] Lodge application to professionals for review
 - [ ] Professionals can review and select customer applications within a radius

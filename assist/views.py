@@ -6,8 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from .models import PricingModel
 from .models import UserProfileModel
-from .forms import SignUpForm
-from .forms import ProfileForm
+from .forms import SignUpForm, ProfileForm, DocumentForm
 
 def index(request):
     # Respond to a request for the home page
@@ -53,14 +52,21 @@ def signup_view(request):
         },
         'hasErrors':False
     }
+
     if request.method == 'POST':
         user_form = SignUpForm(request.POST)
         profile_form = ProfileForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        file_form = DocumentForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid() and (profile_form.cleaned_data['isServicer'] == "False" or file_form.is_valid()):
             user = user_form.save()
             user.refresh_from_db()
             user.profile = profile_form.save()
             user.profile.user = user
+
+            if user.profile.isServicer:
+                # We checked for this initially.
+                document = file_form.save()
+                user.profile.optionalDocument = document
 
             user.profile.save()
             user.save()
@@ -70,6 +76,7 @@ def signup_view(request):
             context['hasErrors'] = True
             context['errors'] = user_form.errors.as_ul()
             context['profileErrors'] = profile_form.errors.as_ul()
+            context['fileErrors'] = file_form.errors.as_ul()
 
     return HttpResponse(signup_template.render(context, request))
 
@@ -89,6 +96,7 @@ def profile_view(request):
 
     context = {
         'form':ProfileForm(instance=userInstance),
+        'userProfile':userInstance,
         'hasErrors':False,
         'pricings' : PricingModel.objects.order_by('yearlyPrice'),
     }
