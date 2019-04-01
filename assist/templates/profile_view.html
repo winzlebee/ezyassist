@@ -11,6 +11,11 @@
                 <label for="{{ form.address.id_for_label }}">Address</label>
                 {{ form.address }}
             </div>
+            <div class='form-group'>
+                {% if form.registration.errors %}<div class='alert alert-danger' role='alert'>{{ form.registration.errors }}</div>{% endif %}
+                <label for="{{ form.registration.id_for_label }}">Car Registration</label>
+                {{ form.registration }}
+            </div>
             {% if not form.isServicer %}
             <div class="card" id='plansCard' style="width: 18rem;">
                 <div class="card-header">

@@ -15,7 +15,7 @@ class SignUpForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfileModel
-        fields = ('address', 'isServicer', 'subscription')
+        fields = ('address', 'registration', 'isServicer', 'subscription')
 
 class DocumentForm(forms.ModelForm):
     class Meta:

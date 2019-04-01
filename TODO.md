@@ -4,7 +4,8 @@
 - [x] Modification of plans on admin panel
 - [x] Dashboard & Lodge view
 - [x] Repairers upload their qualifications (or submit a URL)
-- [ ] Customers can optionally supply their registration information
+- [x] Customers can optionally supply their registration information
+- [x] Refactor signup page to use form values so they don't need to be re-entered
 - [ ] Lodge application to professionals for review
 - [ ] Professionals can review and select customer applications within a radius
 - [ ] Customers can accept professional help once they choose an assistance request

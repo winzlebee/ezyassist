@@ -70,6 +70,7 @@ class Document(models.Model):
 class UserProfileModel(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=50, blank=True)
+    registration = models.CharField(max_length=20)
     isServicer = models.BooleanField(default=False)
     subscription = models.IntegerField(default=0)
     optionalDocument = models.OneToOneField(Document, on_delete=models.SET_NULL, null=True)

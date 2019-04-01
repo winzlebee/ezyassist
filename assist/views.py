@@ -57,13 +57,13 @@ def signup_view(request):
         user_form = SignUpForm(request.POST)
         profile_form = ProfileForm(request.POST)
         file_form = DocumentForm(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid() and (profile_form.cleaned_data['isServicer'] == "False" or file_form.is_valid()):
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
             user.profile = profile_form.save()
             user.profile.user = user
 
-            if user.profile.isServicer:
+            if user.profile.isServicer and file_form.is_valid():
                 # We checked for this initially.
                 document = file_form.save()
                 user.profile.optionalDocument = document
@@ -77,6 +77,12 @@ def signup_view(request):
             context['errors'] = user_form.errors.as_ul()
             context['profileErrors'] = profile_form.errors.as_ul()
             context['fileErrors'] = file_form.errors.as_ul()
+    else:
+        user_form = SignUpForm(request.POST)
+        profile_form = ProfileForm(request.POST)
+
+    context["user"] = user_form
+    context["profile"] = profile_form
 
     return HttpResponse(signup_template.render(context, request))
 
