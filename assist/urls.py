@@ -10,4 +10,5 @@ urlpatterns = [
     path('profile', views.profile_view, name='profile'),
     path('signup', views.signup_view, name='signup'),
     path('dash', views.dash_view, name='dash'),
+	path('', views.TandC, name='TandC'),
 ]
