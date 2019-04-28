@@ -132,3 +132,4 @@ def lodge(request):
 def TandC(request):
     # Respond to a request for the home page
     termsConditions = loader.get_template('terms and conditions.html')
+	return HttpResponse(termsConditions.render(request))
