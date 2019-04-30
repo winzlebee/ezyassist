@@ -1,120 +1,133 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- View for assistance request for roadside assist program. -->
-        <title>{{ pageinfo.title}} </title>
-        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- View for assistance request for roadside assist program. -->
+    <title>{{ pageinfo.title}} </title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-        {% block scripts %}
-        {% endblock %}
-    </head>
-    <body>
-        <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'index' %}">EzyAssist</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse order-1 dual-collapse2" id="navbarNav">
-            {{ request.path.basename }}
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            {% if user.is_authenticated %}
-            <li class="nav-item {% if active == 'dash' %}active{% endif %}">
-                <a class="nav-link" href="/assist/dash">Dash</a>
-            </li>
-            <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
-                <a class="nav-link" href="/assist/lodge">Lodge</a>
-            </li>
-            <li class="nav-item {% if active == 'providers' %}active{% endif %}">
-                <a class="nav-link" href="/assist/providers">Providers</a>
-            </li>
-            {% endif %}
-            </ul>
-        </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarNav">
-            {% if not user.is_authenticated %}
-            <ul class="navbar-nav ml-auto">
-                {% if isFailure %}
-                <li class="nav_item p-2 alert alert-danger">
-                    Invalid Username/Password
-                </li>
-                {% endif %}
-                <li class="nav-item" id='right_btns'>
-                    <a class="nav-link" href="#" onclick='showLogin()'>Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="{% url 'signup' %}">Signup</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0" id='loginForm' method='post' action="{% url 'login' %}" style='display: none;'>
-                {% csrf_token %}
-                <input class="form-control mr-sm-2" name="username" type="text" placeholder="Username">
-                <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password">
-                <div class="btn-group" role="group" aria-label="Login">
-                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
-                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="reverseLogin()">Cancel</button>
-                    <input type="hidden" name="next" value="{{ next }}" />
+
+    {% block scripts %}
+    {% endblock %}
+</head>
+<body>
+    
+    <div class="container-fluid" style="margin:0 auto; padding:0; position:relative;min-height:100vh;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-light">
+                <a class="navbar-brand text-custom font-weight-bold" href="{% url 'index' %}" style="color:rgba(249, 165, 0, 1);">EzyAssist</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse order-1 dual-collapse2" id="navbarNav">
+                    {{ request.path.basename }}
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item {% if active == 'dash' %}active{% endif %}">
+                            <a class="nav-link" href="/assist/dash">Dash</a>
+                        </li>
+                        <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
+                            <a class="nav-link" href="/assist/lodge">Lodge</a>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </div>
-            </form>
-            {% else %}
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item" id='right_btns'>
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                </li>
-            </ul>
-            {% endif %}
-        </div>
-        </nav>
-        {% block content %}
-        {% endblock %}
+                <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" id="navbarNav">
+                    {% if not user.is_authenticated %}
+                    <ul class="navbar-nav ml-auto">
+                        {% if isFailure %}
+                        <li class="nav_item p-2 alert alert-danger">
+                            Invalid Username/Password
+                        </li>
+                        {% endif %}
+                        <li class="nav-item" id='right_btns'>
+                            <a class="nav-link" href="#" onclick='showLogin()'>Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id='signup_btns' onclick='reverseLogin()' href="{% url 'signup' %}">Signup</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" id='loginForm' method='post' action="{% url 'login' %}" style='display: none;'>
+                        {% csrf_token %}
+                        <input class="form-control mr-sm-2" name="username" type="text" placeholder="Username">
+                        <input class="form-control mr-sm-2" name="password" type="password" placeholder="Password">
+                        <div class="btn-group" role="group" aria-label="Login">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+                            <button class="btn btn-outline-secondary my-2 my-sm-0" type="button" onclick="reverseLogin()">Cancel</button>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </div>
+                    </form>
+                    {% else %}
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" id='right_btns'>
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                        <li class="navbar-nav ml-auto nav-flex-icons">
+                            <div class="nav-item avatar">
+                                <a class="nav-link p-0" href="{% url 'profile' %}">
+                                    <img src="http://www.personalbrandingblog.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" class="rounded-circle z-depth-0"
+                                         alt="avatar image" height="35">
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </nav>
 
-        <footer class="pt-4 my-md-5 pt-md-5 border-top">
-            <div class="row">
-            <div class="col-12 col-md">
-                <small class="d-block mb-3 text-muted">&copy; {% now "Y" %}</small>
-            </div>
-            <div class="col-6 col-md">
-                <h5>About</h5>
-                <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="#">Information</a></li>
-                <li><a class="text-muted" href="#">Development</a></li>
-                <li><a class="text-muted" href="#">Terms and Conditions</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Links</h5>
-                <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="http://uow.edu.au">University of Wollongong</a></li>
-                <li><a class="text-muted" href="#">Course Code</a></li>
-                </ul>
-            </div>
-            </div>
-        </footer>
+            <div id="content-wrap" style="padding-bottom:0px;">
 
-        <script>
-            function showLogin() {
-                $("#loginForm").show();
-                $('#right_btns').hide();
-                $('#signup_btns').hide();
-            }
+                {% block content %}
 
-            function reverseLogin() {
-                $("#loginForm").hide();
-                $('#right_btns').show();
-                $('#signup_btns').show();
-            }
-        </script>
-        </div>
-    </body>
+                {% endblock %}
+
+            </div>
+
+                <footer id="footer" class="hsg-footer bg-custom" style="position: absolute; bottom: -200px; width: 100%; height: 150px; background-color:black;margin-top:100px;">
+                 <div class="row">
+                     <div class="col-12 col-md">
+                         <small class="d-block mb-3 text-muted">&copy; {% now "Y" %}</small>
+                     </div>
+                     <div class="col-6 col-md">
+                         <h5 style="font-weight: bold; color: white;">About</h5>
+                         <ul class="list-unstyled text-small">
+                             <li><a class="text-muted" href="#">Information</a></li>
+                             <li><a class="text-muted" href="#">Development</a></li>
+                             <li><a class="text-muted" href="#">Terms and Conditions</a></li>
+                         </ul>
+                     </div>
+                     <div class="col-6 col-md">
+                         <h5 style="font-weight: bold; color: white;">Links</h5>
+                         <ul class="list-unstyled text-small">
+                             <li><a class="text-muted" href="http://uow.edu.au">University of Wollongong</a></li>
+                             <li><a class="text-muted href="#">Course Code</a></li>
+                         </ul>
+                     </div>
+                 </div>
+             </footer>
+
+                <script>
+                    function showLogin() {
+                        $("#loginForm").show();
+                        $('#right_btns').hide();
+                        $('#signup_btns').hide();
+                    }
+
+                    function reverseLogin() {
+                        $("#loginForm").hide();
+                        $('#right_btns').show();
+                        $('#signup_btns').show();
+                    }
+                </script>
+    </div>
+</body>
 </html>
+
