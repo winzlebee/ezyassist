@@ -128,3 +128,10 @@ def lodge(request):
         'userProfile': UserProfileModel.objects.get(user=request.user),
     }
     return HttpResponse(template.render(context, request))
+
+def TandC(request):
+    # Respond to a request for the home page
+    termsConditions = loader.get_template('terms and conditions.html')
+    context = {
+	}
+    return HttpResponse(termsConditions.render(context, request))
