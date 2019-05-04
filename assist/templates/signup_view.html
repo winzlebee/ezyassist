@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="container">
 <form action='{% url 'signup' %}' method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
     <div class='row'>
@@ -104,5 +104,6 @@
     });
   </script>
 </form>
+</div>
 
 {% endblock %}

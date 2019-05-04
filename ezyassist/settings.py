@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/assist/lodge'
 LOGIN_URL = '/assist/'
 MEDIA_URL = '/assist/documents/'
+STATIC_URL = '/static/'
 
 # Application definition
 
