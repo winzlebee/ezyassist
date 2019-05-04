@@ -86,6 +86,13 @@ def signup_view(request):
     return HttpResponse(signup_template.render(context, request))
 
 @login_required
+def withdraw_view(request, withdraw_pk=None):
+    withdraw = AssistanceRequest.objects.get(id=withdraw_pk)
+    if withdraw.creator == request.user:
+        withdraw.delete()
+    return HttpResponseRedirect('/assist/dash')
+
+@login_required
 def dash_view(request):
     template = loader.get_template('dash_view.html')
     userInstance = request.user

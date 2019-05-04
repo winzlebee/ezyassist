@@ -25,7 +25,7 @@
                 {% else %} Pending... {% endif %}
                 </td>
                 <td>
-                    <button type="button" class="btn btn-secondary">Withdraw</button>
+                    <a class="btn btn-secondary" href="{% url 'withdraw' request.id %}">Withdraw</button>
                 </td>
             </tr>
             {% endfor %}
