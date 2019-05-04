@@ -4,9 +4,8 @@ from django.template import loader
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from .models import PricingModel
-from .models import UserProfileModel
-from .forms import SignUpForm, ProfileForm, DocumentForm
+from .models import PricingModel, UserProfileModel, AssistanceRequest, AssistanceApproval
+from .forms import SignUpForm, ProfileForm, DocumentForm, AssistanceRequestForm
 
 def index(request):
     # Respond to a request for the home page
@@ -91,7 +90,10 @@ def dash_view(request):
     template = loader.get_template('dash_view.html')
     userInstance = request.user
 
-    context = {'user' : userInstance}
+    context = {
+        'user' : userInstance,
+        'requests' : AssistanceRequest.objects.filter(creator=userInstance),
+    }
 
     return HttpResponse(template.render(context, request))
 
@@ -127,6 +129,19 @@ def lodge(request):
         'user': request.user,
         'userProfile': UserProfileModel.objects.get(user=request.user),
     }
+
+    if request.method == 'POST':
+        assistance_form = AssistanceRequestForm(request.POST)
+        if assistance_form.is_valid():
+            assistanceRequest = assistance_form.save()
+            assistanceRequest.creator = request.user
+            assistanceRequest.save()
+            
+            return HttpResponseRedirect('/assist/dash')
+        else:
+            context['hasErrors'] = True
+            context['errors'] = assistance_form.errors.as_ul()
+
     return HttpResponse(template.render(context, request))
 
 def TandC(request):

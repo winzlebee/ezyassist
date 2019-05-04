@@ -16,16 +16,20 @@ class AssistanceRequest(models.Model):
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        blank=True, null=True,
     )
     
     # We use 5 decimal places as this indicates 1 metre accuracy.
     latitude = models.DecimalField(decimal_places=5, max_digits=8)
     longitude = models.DecimalField(decimal_places=5, max_digits=8)
-    lodge_time = models.DateTimeField()
+    lodge_time = models.DateTimeField(auto_now_add=True)
     request_details = models.TextField(max_length=200)
     
     def __str__(self):
         return self.creator.email + "\t" + self.request_details
+
+    def isApproved(self):
+        return AssistanceApproval.objects.get(request=self).exists()
     
 class AssistanceApproval(models.Model):
     repairer = models.ForeignKey(

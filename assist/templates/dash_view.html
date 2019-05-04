@@ -4,7 +4,34 @@
 
 <div class='p-5'>
     <h1 class='display-2'>Dashboard</h1>
-    <h2>You currently have 0 lodged assistance requests.</h2>
+    <h2>You currently have {{ requests|length }} lodged assistance requests.</h2>
+    {% if requests %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.latitude }}, {{ request.longitude }}</td>
+                <td>
+                {% if request.isApproved %} Repairer on the way
+                {% else %} Pending... {% endif %}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-secondary">Withdraw</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
     <div class='row'>
         <div class='col-sm-6'>
             <div class='card'>
