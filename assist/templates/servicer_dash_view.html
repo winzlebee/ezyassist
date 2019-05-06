@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class='p-5'>
+    <h1 class='display-2'>Dashboard</h1>
+    <p class='lead'>
+        Currently Active Service Requests
+    </p>
+    <form action="{% url 'dash' %}">
+        <div class='form-row align-items-center'>
+            <label for='radius' class='col-sm-2 col-form-label col-form-label-sm'>Show Within Distance</label>
+            <div class='col-sm-6'>
+                <select name='radius' class='custom-select custom-select-sm'>
+                    <option value='20'>20km</option>
+                    <option value='50'>50km</option>
+                    <option value='100' selected>100km+</option>
+                </select>
+            </div>
+            <div class='col-sm-2'>
+                <button class='btn btn-sm btn-primary' type='submit'>Apply</button>
+            </div>
+        </div>
+    </form>
+    {% if requests %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td><!-- Replace with distance determined using maps API --></td>
+                <td>
+                {% if request.isApproved %} Repairer on the way
+                {% else %} Open {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'respond' request.id %}">Respond</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <div class='row'>
+        <div class='container mt-5'>
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'>Your Account</h5>
+                    <p class='card-text'>Check your past assistance responses, and transaction logs.</p>
+                    <a href="{% url 'lodge' %}" class='btn btn-secondary'>View &raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

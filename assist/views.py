@@ -4,6 +4,8 @@ from django.template import loader
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
+from django.urls import reverse
+
 from .models import PricingModel, UserProfileModel, AssistanceRequest, AssistanceApproval
 from .forms import SignUpForm, ProfileForm, DocumentForm, AssistanceRequestForm
 
@@ -90,19 +92,27 @@ def withdraw_view(request, withdraw_pk=None):
     withdraw = AssistanceRequest.objects.get(id=withdraw_pk)
     if withdraw.creator == request.user:
         withdraw.delete()
-    return HttpResponseRedirect('/assist/dash')
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
+def respond_view(request, respond_pk=None):
+    # Use the respond_pk to create an AssistanceResponse for a request for the user
+    return HttpResponseRedirect(reverse('dash'))
 
 @login_required
 def dash_view(request):
-    template = loader.get_template('dash_view.html')
     userInstance = request.user
+    profileInstance = UserProfileModel.objects.get(user=userInstance)
 
     context = {
         'user' : userInstance,
         'requests' : AssistanceRequest.objects.filter(creator=userInstance),
     }
 
-    return HttpResponse(template.render(context, request))
+    if profileInstance.isServicer:
+        return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))
+    else:
+        return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
 @login_required
 def profile_view(request):
