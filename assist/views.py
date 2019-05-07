@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .models import PricingModel, UserProfileModel, AssistanceRequest, AssistanceApproval
-from .forms import SignUpForm, ProfileForm, DocumentForm, AssistanceRequestForm
+from .forms import *
 
 def index(request):
     # Respond to a request for the home page
@@ -107,7 +107,13 @@ def dash_view(request):
     context = {
         'user' : userInstance,
         'requests' : AssistanceRequest.objects.filter(creator=userInstance),
+        'dist_form' : DistanceSelectForm(),
     }
+
+    if request.method == 'POST':
+        distance_form = DistanceSelectForm(request.POST)
+        if (distance_form.is_valid()):
+            context['dist_form'] = distance_form
 
     if profileInstance.isServicer:
         return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))

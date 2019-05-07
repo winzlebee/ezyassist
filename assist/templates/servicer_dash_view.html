@@ -2,20 +2,17 @@
 
 {% block content %}
 
-<div class='p-5'>
+<div class='p-5 container'>
     <h1 class='display-2'>Dashboard</h1>
     <p class='lead'>
         Currently Active Service Requests
     </p>
-    <form action="{% url 'dash' %}">
+    <form action="{% url 'dash' %}" method="POST">
+        {% csrf_token %}
         <div class='form-row align-items-center'>
             <label for='radius' class='col-sm-2 col-form-label col-form-label-sm'>Show Within Distance</label>
             <div class='col-sm-6'>
-                <select name='radius' class='custom-select custom-select-sm'>
-                    <option value='20'>20km</option>
-                    <option value='50'>50km</option>
-                    <option value='100' selected>100km+</option>
-                </select>
+                {{ dist_form.as_table }}
             </div>
             <div class='col-sm-2'>
                 <button class='btn btn-sm btn-primary' type='submit'>Apply</button>
