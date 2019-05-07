@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<div class='container'>
 <form action='{% url 'profile' %}' method="POST">
     {% csrf_token %}
     <div class='row'>
@@ -41,5 +42,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
     <a class="btn btn-secondary" href="{% url 'dash' %}">Cancel</a>
 </form>
+</div>
 
 {% endblock %}

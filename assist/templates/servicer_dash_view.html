@@ -30,10 +30,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for request in requests %}
+            {% for request, distance in requests %}
             <tr>
                 <td>{{ request.id }}</td>
-                <td><!-- Replace with distance determined using maps API --></td>
+                <td>{{ distance }}km</td>
                 <td>
                 {% if request.isApproved %} Repairer on the way
                 {% else %} Open {% endif %}

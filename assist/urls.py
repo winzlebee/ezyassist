@@ -13,7 +13,7 @@ urlpatterns = [
     path('signup', views.signup_view, name='signup'),
     path('dash', views.dash_view, name='dash'),
     re_path(r'^withdraw/(?P<withdraw_pk>[0-9]+)/$', views.withdraw_view, name='withdraw'),
-    path('respond/<int:id>', views.respond_view, name='respond'),
+    path('respond/<int:respond_pk>', views.respond_view, name='respond'),
 	path('Terms_and_Conditions', views.TandC, name='TandC'),
 	
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

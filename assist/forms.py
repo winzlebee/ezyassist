@@ -23,7 +23,7 @@ class ProfileForm(forms.ModelForm):
         fields = ('address', 'registration', 'isServicer', 'subscription')
 
 class DistanceSelectForm(forms.Form):
-    distance = forms.ChoiceField(widget=forms.Select(attrs={"class" : "custom-select custom-select-sm"}), choices=(('20', '20km'), ('50', '50km'), ('0', '100km+')), label='')
+    distance = forms.ChoiceField(widget=forms.Select(attrs={"class" : "custom-select custom-select-sm"}), choices=(('20', '20km'), ('50', '50km'), ('100', '100km')), label='')
 
 class DocumentForm(forms.ModelForm):
     class Meta:
