@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -231,15 +231,19 @@
                                                 <label class="form-check-label" for="inlineRadio2">Service Provider</label>
                                             </div>
                                         </div>
-                                        <div style="padding-top:20px;">
+
+                       
+                                        <div style="padding-top:20px;" >
                                             <b>Plans</b>
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             {% for pricing in pricings %}
                                             <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
                                             {% endfor %}
-                                        </ul>
+                                        </ul>                 
                                     </div>
+                                  
+
                                     <div id='repairerCard' style='display: none;' class="card">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="customFile" name='document'>
