@@ -90,15 +90,22 @@
 
     var latitude = marker.getLatLng()['lat'];
 
-    $("#formSubmitIncident").submit(function (eventObj) {
+
+    $("#formSubmitIncident").submit( function(eventObj) {
+        var submitLat = marker.getLatLng()['lat'].toString();
+        var submitLong = marker.getLatLng()['lng'].toString();
+
+        submitLat = submitLat.substring(0, 7);
+        submitLong = submitLong.substring(0, 7);
+
         $('<input />').attr('type', 'hidden')
-            .attr('name', 'lat')
-            .attr('value', marker.getLatLng()['lat'])
+            .attr('name', 'latitude')
+            .attr('value', submitLat)
             .appendTo('#formSubmitIncident');
 
         $('<input />').attr('type', 'hidden')
-            .attr('name', 'lng')
-            .attr('value', marker.getLatLng()['lng'])
+            .attr('name', 'longitude')
+            .attr('value', submitLong)
             .appendTo('#formSubmitIncident');
 
         return true;

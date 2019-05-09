@@ -4,9 +4,14 @@ from django.template import loader
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from .models import PricingModel
-from .models import UserProfileModel
-from .forms import SignUpForm, ProfileForm, DocumentForm
+import requests
+import json
+from assist.utils import haversine
+
+from django.urls import reverse
+
+from .models import PricingModel, UserProfileModel, AssistanceRequest, AssistanceApproval
+from .forms import *
 
 def index(request):
     # Respond to a request for the home page
@@ -87,13 +92,59 @@ def signup_view(request):
     return HttpResponse(signup_template.render(context, request))
 
 @login_required
+def withdraw_view(request, withdraw_pk=None):
+    withdraw = AssistanceRequest.objects.get(id=withdraw_pk)
+    if withdraw.creator == request.user:
+        withdraw.delete()
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
+def respond_view(request, respond_pk=None):
+    # Use the respond_pk to create an AssistanceResponse for a request for the user
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
 def dash_view(request):
-    template = loader.get_template('dash_view.html')
     userInstance = request.user
+    profileInstance = UserProfileModel.objects.get(user=userInstance)
 
-    context = {'user' : userInstance}
+    # Default distance when visiting the page
+    targetDistance = 20
 
-    return HttpResponse(template.render(context, request))
+    context = {
+        'user' : userInstance,
+        'dist_form' : DistanceSelectForm(initial={'distance' : targetDistance}),
+    }
+
+    if request.method == 'POST':
+        distance_form = DistanceSelectForm(request.POST)
+        if (distance_form.is_valid()):
+            targetDistance = float(distance_form.cleaned_data['distance'])
+            context['dist_form'] = distance_form
+
+    if profileInstance.isServicer:
+            
+        # Use the requests library to make a request to get the latitude and longitude
+        response = requests.get('https://api.opencagedata.com/geocode/v1/json?q='+ profileInstance.address + '&key=6570588bba6b4f288c8315c735b08c59')
+
+        # Response is in JSON - parse to get the address
+        if response.status_code == 200:
+            json_object = json.loads(response.content)
+            s_latitude = float(json_object['results'][0]['geometry']['lat'])
+            s_longitude = float(json_object['results'][0]['geometry']['lng'])
+
+        matchingRequests = []
+
+        for r in AssistanceRequest.objects.all():
+            dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
+            if dist < targetDistance:
+                matchingRequests.append((r, round(dist, 2)))
+
+        context['requests'] = matchingRequests
+        return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))
+    else:
+        context['requests'] = AssistanceRequest.objects.filter(creator=userInstance)
+        return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
 @login_required
 def profile_view(request):
@@ -127,6 +178,19 @@ def lodge(request):
         'user': request.user,
         'userProfile': UserProfileModel.objects.get(user=request.user),
     }
+
+    if request.method == 'POST':
+        assistance_form = AssistanceRequestForm(request.POST)
+        if assistance_form.is_valid():
+            assistanceRequest = assistance_form.save()
+            assistanceRequest.creator = request.user
+            assistanceRequest.save()
+            
+            return HttpResponseRedirect('/assist/dash')
+        else:
+            context['hasErrors'] = True
+            context['errors'] = assistance_form.errors.as_ul()
+
     return HttpResponse(template.render(context, request))
 
 def TandC(request):

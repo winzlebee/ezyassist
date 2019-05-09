@@ -9,7 +9,7 @@
 {% block content %}
 
 
-
+<div class='container'>
 <form action='{% url 'profile' %}' method="POST">
     {% csrf_token %}
     <div class='row'>
@@ -24,7 +24,7 @@
                 <label for="{{ form.registration.id_for_label }}">Car Registration</label>
                 {{ form.registration }}
             </div>
-            {% if not form.isServicer %}
+            {% if not form.isServicer.value %}
             <div class="card" id='plansCard' style="width: 18rem;">
                 <div class="card-header">
                     Change Plan
@@ -49,5 +49,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
     <a class="btn btn-secondary" href="{% url 'dash' %}">Cancel</a>
 </form>
+</div>
 
 {% endblock %}

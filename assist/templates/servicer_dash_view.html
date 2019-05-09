@@ -4,28 +4,42 @@
 
 <div class='p-5 container'>
     <h1 class='display-2'>Dashboard</h1>
-    <h2>You currently have {{ requests|length }} lodged assistance requests.</h2>
+    <p class='lead'>
+        Currently Active Service Requests
+    </p>
+    <form action="{% url 'dash' %}" method="POST">
+        {% csrf_token %}
+        <div class='form-row align-items-center'>
+            <label for='radius' class='col-sm-2 col-form-label col-form-label-sm'>Show Within Distance</label>
+            <div class='col-sm-6'>
+                {{ dist_form.as_table }}
+            </div>
+            <div class='col-sm-2'>
+                <button class='btn btn-sm btn-primary' type='submit'>Apply</button>
+            </div>
+        </div>
+    </form>
     {% if requests %}
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Location</th>
+                <th scope="col">Distance</th>
                 <th scope="col">Status</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for request in requests %}
+            {% for request, distance in requests %}
             <tr>
                 <td>{{ request.id }}</td>
-                <td>{{ request.latitude }}, {{ request.longitude }}</td>
+                <td>{{ distance }}km</td>
                 <td>
                 {% if request.isApproved %} Repairer on the way
-                {% else %} Pending... {% endif %}
+                {% else %} Open {% endif %}
                 </td>
                 <td>
-                    <a class="btn btn-secondary" href="{% url 'withdraw' request.id %}">Withdraw</button>
+                    <a class="btn btn-primary" href="{% url 'respond' request.id %}">Respond</button>
                 </td>
             </tr>
             {% endfor %}
@@ -33,20 +47,11 @@
     </table>
     {% endif %}
     <div class='row'>
-        <div class='col-sm-6'>
-            <div class='card'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Lodge a Request</h5>
-                    <p class='card-text'>Tell us your location and we'll send you assistance</p>
-                    <a href="{% url 'lodge' %}" class='btn btn-primary'>Lodge &raquo;</a>
-                </div>
-            </div>
-        </div>
-        <div class='col-sm-6'>
+        <div class='container mt-5'>
             <div class='card'>
                 <div class='card-body'>
                     <h5 class='card-title'>Your Account</h5>
-                    <p class='card-text'>Check out past calls, and what you've done in the past.</p>
+                    <p class='card-text'>Check your past assistance responses, and transaction logs.</p>
                     <a href="{% url 'lodge' %}" class='btn btn-secondary'>View &raquo;</a>
                 </div>
             </div>
