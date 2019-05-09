@@ -49,7 +49,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for='infoText'><h5>INCIDENT DETAILS</h5></label>
-                        <textarea class="form-control" id='infoText' name='infoText' style="height:230px;width:85%;border-radius:0;"></textarea>
+                        <textarea class="form-control" id='infoText' name='request_details' style="height:230px;width:85%;border-radius:0;"></textarea>
                         <small id="infoHelp" class="form-text text-dark">Please be as detailed as possible.</small>
                     </div>
                 </form>
@@ -74,6 +74,9 @@
     <hr />
     <div style="text-align:center;">
         <input type='submit' value='SUBMIT REQUEST' class='btn text-custom' form='formSubmitIncident' style="transition: 0.3s;vertical-align:middle;min-height:50px;min-width:165px;border-color:#FF8000;color:#FF8000; border-width:thick;border-radius:0;font-weight:bold;width:150px;margin-top:50px;padding-bottom:0;">
+    </div>
+    <div style='alert warning'>
+        {{ errors }}
     </div>
 </div>
 
