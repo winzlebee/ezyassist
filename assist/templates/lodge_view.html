@@ -1,14 +1,13 @@
-
 {% extends "base.html" %}
 
 {% block scripts %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-crossorigin=""/>
+      integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+      crossorigin="" />
 
 <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-crossorigin=""></script>
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
 <style>
     #leafletmap {
         height: 400px;
@@ -21,39 +20,63 @@ crossorigin=""></script>
         padding-top: 40px;
         padding-bottom: 20px;
     }
+
+    input[type=submit]:hover {
+        background-color: #FF8000;
+        color: #FFFFFF !important ;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class='lodgeArea' style="margin: 10 50 10 50;">
-    <h2>Lodge</h2>
 
-    <p>Please fill out the form below and we will quickly scramble the closest repair expert to assist you!</p>
-
-    <form id='formSubmitIncident' action="{% url 'lodge' %}" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for='infoText'>Incident Details</label>
-            <textarea class="form-control" id='infoText' name='infoText'></textarea>
-            <small id="infoHelp" class="form-text text-muted">Please be as detailed as possible.</small>
-        </div>
-    </form>
-
-    <h3>Select Incident Location</h3>
-    <form class='form-inline'>
-        <div class='form-group'>
-            <label for='addressInput' class='sr-only'>Address</label>
-            <input type='text' placeholder='Enter Address' id="addressInput" value="{{ userProfile.address }}" class='form-control'>
-        </div>
-        <button type='button' onClick='gotoAddress()' class='btn btn-primary'>Go</button>
-    </form>
-    <div id='addressWarning' style='display:none' class="alert alert-warning" role="alert">
-        Couldn't find address!
+{% load staticfiles %}
+<div class="jumbotron jumbotron-fluid bg-custom" style="background-color:#FF8000; background-size:270%;max-height:170px;">
+    <div class="container-fluid mt-0">
+        <h1 style="color:#fff" class="ml-5 align-middle">
+            <span itemprop="headline">LODGE A REQUEST</span>
+        </h1>
     </div>
-    <div id="leafletmap"></div>
-    <input type='submit' value='Submit Request' class='btn btn-primary' form='formSubmitIncident' >
-
 </div>
+<p class="lead ml-5 mt-2 text-dark">Please fill out the form below and we will quickly scramble the closest repair expert to assist you!</p>
+
+
+<div class="lodgeArea">
+    <table border="0" width="90%" style="margin:0 auto;">
+        <tr>
+            <td width="40%" valign="top">
+                <form id='formSubmitIncident' action="{% url 'lodge' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for='infoText'><h5>INCIDENT DETAILS</h5></label>
+                        <textarea class="form-control" id='infoText' name='infoText' style="height:230px;width:85%;border-radius:0;"></textarea>
+                        <small id="infoHelp" class="form-text text-dark">Please be as detailed as possible.</small>
+                    </div>
+                </form>
+
+                <h5 style="padding-top:30px;">SELECT INCIDENT LOCATION</h5>
+                <form class='form-inline' style="padding-top:20px;">
+                    <div class='form-group'>
+                        <label for='addressInput' class='sr-only'>Address</label>
+                        <input type='text' placeholder='Enter Address' id="addressInput" value="{{ userProfile.address }}" class='form-control' style="border-radius:0;min-height:50px;">
+                    </div>
+                    <button type='button' onClick='gotoAddress()' class='btn text-white bg-custom' style="vertical-align:middle;min-height:50px;background-color:rgb(112,112,112);border-radius:0;font-weight:bold;">
+                        GO
+                    </button>
+                </form>
+                <div id='addressWarning' style='display:none' class="alert alert-warning" role="alert">
+                    Couldn't find address!
+                </div>
+            </td>
+            <td> <div id="leafletmap"></div></td>
+        </tr>
+    </table>
+    <hr />
+    <div style="text-align:center;">
+        <input type='submit' value='SUBMIT REQUEST' class='btn text-custom' form='formSubmitIncident' style="transition: 0.3s;vertical-align:middle;min-height:50px;min-width:165px;border-color:#FF8000;color:#FF8000; border-width:thick;border-radius:0;font-weight:bold;width:150px;margin-top:50px;padding-bottom:0;">
+    </div>
+</div>
+
 
 <script>
 
@@ -61,13 +84,13 @@ crossorigin=""></script>
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {}).addTo(theMap);
 
-    var marker = L.marker([-34.4050554, 150.8783465], {"draggable":true}).addTo(theMap)
-                .bindPopup('<b>Please</b> move this marker to your exact breakdown location. <span style="font-size: 12px">Thanks!</span>')
-                .openPopup();
+    var marker = L.marker([-34.4050554, 150.8783465], { "draggable": true }).addTo(theMap)
+        .bindPopup('<b>Please</b> move this marker to your exact breakdown location. <span style="font-size: 12px">Thanks!</span>')
+        .openPopup();
 
     var latitude = marker.getLatLng()['lat'];
 
-    $("#formSubmitIncident").submit( function(eventObj) {
+    $("#formSubmitIncident").submit(function (eventObj) {
         $('<input />').attr('type', 'hidden')
             .attr('name', 'lat')
             .attr('value', marker.getLatLng()['lat'])
@@ -83,10 +106,10 @@ crossorigin=""></script>
 
     function gotoAddress() {
         var newAddress = document.getElementById("addressInput").value;
-        var query = 'https://api.opencagedata.com/geocode/v1/json?q='+newAddress + "&key=6570588bba6b4f288c8315c735b08c59";
+        var query = 'https://api.opencagedata.com/geocode/v1/json?q=' + newAddress + "&key=6570588bba6b4f288c8315c735b08c59";
         console.log(query);
 
-        $.get(query, function(data, statustext, xhr){
+        $.get(query, function (data, statustext, xhr) {
             console.log(xhr.status);
             if (xhr.status == 200 && data['results']['0']) {
                 // Data is now a JSON object that we can manipulate

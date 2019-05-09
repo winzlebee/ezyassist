@@ -1,109 +1,285 @@
-{% extends "base.html" %}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block scripts %}
-<style>
+    <!-- View for assistance request for roadside assist program. -->
+    <title>{{ pageinfo.title}} </title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-</style>
-{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-{% block content %}
-<div class="container">
-<form action='{% url 'signup' %}' method="POST" enctype='multipart/form-data'>
-    {% csrf_token %}
-    <div class='row'>
-        <div class='col-sm p-5'>
-            <div class="form-group">
-                <input type="text" class="form-control" name='username' value="{{ user.cleaned_data.username }}" placeholder="Enter Username" required>
-            </div>
-            <div class="form-row form-group">
-                <div class="col">
-                    <input type="text" class="form-control" name='first_name' placeholder="Enter First Name" value="{{ user.cleaned_data.first_name }}" required>
-                </div>
-                <div class="col">
-                    <input type="text" class="form-control" name='last_name' placeholder="Enter Last Name" value="{{ user.cleaned_data.last_name }}" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email address *</label>
-                <input type="email" class="form-control" name='email' placeholder="Enter Email Address" value="{{ user.cleaned_data.email }}" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Home address</label>
-                <input type="text" class="form-control" name='address' aria-describedby="emailHelp" value="{{ profile.cleaned_data.address }}" placeholder="Home Address">
-                <small id="emailHelp" class="form-text text-muted">We have a very stringent privacy policy. We'll never share your home address.</small>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Car Registration *</label>
-                <input type="text" class="form-control" name='registration' aria-describedby="regoHelp" value="{{ profile.cleaned_data.registration }}" pattern="^(-?[a-zA-Z0-9]){1,9}$" placeholder="AB-CD-EF">
-                <small id="regoHelp" class="form-text text-muted">Only used for identification purposes.</small>
-            </div>
-            <div class="form-row form-group">
-                <div class="col">
-                    <input type="password" class="form-control" name='password1' placeholder="Password">
-                </div>
-                <div class="col">
-                    <input type="password" class="form-control" name='password2' placeholder="Confirm Password">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>I am a...</label><br />
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" checked>
-                    <label class="form-check-label" for="inlineRadio1">Customer</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="isServicer" id="repairerBox" value="True">
-                    <label class="form-check-label" for="inlineRadio2">Service Provider</label>
-                </div>
-            </div>
-            <div class="card" id='plansCard' style="width: 18rem;">
-                <div class="card-header">
-                    Plans
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for pricing in pricings %}
-                    <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div id='repairerCard' style='display: none;' class="card">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile" name='document'>
-                    <label class="custom-file-label" for="customFile">Upload a document</label>
-                    <small id="fileHelpBlock" class="form-text text-muted">
-                    Please upload a file indicating all available repair qualifications.
-                    </small>
-                </div>
-            </div>
+
+    {% block scripts %}
+    <style>
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            background-image: linear-gradient(-60deg, #ff8000 0%, #f09819 100%);
+            background-size: cover;
+            height: 100%;
+            align-items: center;
+            font-family: Verdana;
+            min-height:100vh;
+        }
+
+            .flex-container > .box {
+                height: 80%;
+                font-size: 30px;
+                box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, .2);
+                width: 85%;
+                background-color: white;
+            }
+
+        #td1 {
+            background-image: linear-gradient( rgba(20,20,20, .8), rgba(20,20,20, .8)), url(https://jsr75.files.wordpress.com/2010/06/195.jpg);
+            background-size: cover;
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+
+        #logo {
+            color: #ff8000;
+            font-size:14px;
+        }
+
+        #div1 {
+            padding-top: 50px;
+            height: 30%;
+        }
+
+        #div2 {
+            color: white;
+            height: 60%;
+            font-weight: bold;
+            font-size: 28px;
+            padding-top:50px;
+            padding-bottom: 200px;
+        }
+
+        #div3 {
+            height: 10%;
+            padding-bottom: 50px;
+            color: #ff8000;
+            font-size: 10px;
+        }
+
+        #learnmore {
+            font-size: 14px;
+            background-color: white;
+            border-color: white;
+            color: black;
+            text-decoration: none;
+            height:30px;
+            width: 120px;
+        }
+
+        .btn {
+           
+            background-color: #ff8000;
+            color: white;
+            border-color: #ff8000;
+            border-radius: 0;
+        }
+
+        #learnmorewrap {
+            margin-top: 30px;
+        }
+
+        form {
+            font-size: 14px;
+            font-family: Verdana;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            display: block;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            padding: 4px;
+            width: 300px;
+            height: 32px;
+            border: none;
+            border-bottom: 1px solid #AAA;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            transition: 0.2s ease;
+            border-radius: 0;
+            margin-left:20px;
+            margin-right:20px;
+        }
+
+            input[type="text"]:focus,
+            input[type="password"]:focus,
+            input[type="email"]:focus{
+                border-bottom: 2px solid #ff8000;
+                color: black;
+                transition: 0.2s ease;
+            }
+
+            small, .card {
+                margin-left:20px;
+                margin-right: 20px;
+            }
+
+           button {
+                height: 40px;
+                width:100px;
+                border-radius:0;
+            }
+
+           #marginleft {
+               margin-left: 20px;
+               margin-right:20px;
+           }
+    </style>
+    {% endblock %}
+</head>
+
+<body>
+
+    {% block content %}
+
+    <div class="flex-container">
+        <div class="box">
+            <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="40%" height="100%" id="td1">
+                        <div id="div1">
+                            <p id="logo">EzyAssist</p>
+                        </div>
+
+                        <div id="div2">
+                            Get help where you need it, when you need it! <br />
+                            <div id="learnmorewrap">
+
+                                <a class="btn btn-block bg-custom border-custom" role="button" id="learnmore" href="{% url 'index' %}">Learn more</a>
+
+                            </div>
+
+                        </div>
+
+                        <div id="div3">
+                            <a href="/assist/Terms_and_Conditions" style="color:#ff8000;text-decoration:none">Terms and Conditions</a>
+                        </div>
+
+                    </td>
+                 
+                    <td>
+                        <h4 style="margin-left: 55px;color:rgba(20,20,20, .8); margin-top:20px;"><b>SIGN UP</b></h4>
+                        <form action='{% url 'signup' %}' method="POST" enctype='multipart/form-data'>
+                            {% csrf_token %}
+                            <div class='row'>
+                                <div class='col-sm p-5'>
+                                    <div class="form-row form-group">
+                                        <div class="col">
+                                            <input type="text" class="form-control" name='username' value="{{ user.cleaned_data.username }}" placeholder="Username" required>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name='registration' aria-describedby="regoHelp" value="{{ profile.cleaned_data.registration }}" pattern="^(-?[a-zA-Z0-9]){1,9}$" placeholder="Car Registration (AB-CD-EF)">
+                                            <small id="regoHelp" class="form-text text-muted">Only used for identification purposes.</small>
+                                        </div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                        <div class="col">
+                                            <input type="text" class="form-control" name='first_name' placeholder="First Name" value="{{ user.cleaned_data.first_name }}" required>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name='last_name' placeholder="Last Name" value="{{ user.cleaned_data.last_name }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row form-group">
+                                        <div class="col">
+                                            <input type="email" class="form-control" name='email' placeholder="Email Address" value="{{ user.cleaned_data.email }}" required>
+                                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" name='address' aria-describedby="emailHelp" value="{{ profile.cleaned_data.address }}" placeholder="Home Address">
+                                            <small id="emailHelp" class="form-text text-muted">We have a very stringent privacy policy. We'll never share your home address.</small>
+                                        </div>
+                                    </div>
+                                   
+                               
+                                    <div class="form-row form-group">
+                                        <div class="col">
+                                            <input type="password" class="form-control" name='password1' placeholder="Password">
+                                        </div>
+                                        <div class="col">
+                                            <input type="password" class="form-control" name='password2' placeholder="Confirm Password">
+                                        </div>
+                                    </div>
+                                    <div id="marginleft">
+                                    <div class="form-group">
+                                        <label><b>I am a...</b></label><br />
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" checked>
+                                            <label class="form-check-label" for="inlineRadio1">Customer</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="isServicer" id="repairerBox" value="True">
+                                            <label class="form-check-label" for="inlineRadio2">Service Provider</label>
+                                        </div>
+                                    </div>
+                                        <div style="padding-top:20px;" >
+                                            <b>Plans</b>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            {% for pricing in pricings %}
+                                            <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                                            {% endfor %}
+                                        </ul>
+                                        </div>
+                                    <div id='repairerCard' style='display: none;' class="card">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFile" name='document'>
+                                            <label class="custom-file-label" for="customFile">Upload a document</label>
+                                            <small id="fileHelpBlock" class="form-text text-muted">
+                                                Please upload a file indicating all available repair qualifications.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if hasErrors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ errors }}
+                                {{ profileErrors }}
+                                {{ fileErrors }}
+                            </div>
+                            {% endif %}
+                            <div style="text-align: center;">
+                                <button type="submit" style="margin-bottom:20px;" class="btn">Sign Up</button>
+                            </div>
+
+                            <script>
+                                $('#repairerBox').on('click', function (e) {
+                                    $('#plansCard').fadeOut(500);
+                                    $('#repairerCard').fadeIn(500);
+                                });
+
+                                $('#customerBox').on('click', function (e) {
+                                    $('#plansCard').fadeIn(500);
+                                    $('#repairerCard').fadeOut(500);
+                                });
+
+                                $('.custom-file-input').on('change', function () {
+                                    let fileName = $(this).val().split('\\').pop();
+                                    $(this).next('.custom-file-label').html(fileName);
+                                });
+                            </script>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
-    {% if hasErrors %}
-    <div class="alert alert-danger" role="alert">
-     {{ errors }}
-     {{ profileErrors }}
-     {{ fileErrors }}
-    </div>
-    {% endif %}
-  <button type="submit" class="btn btn-primary">Submit</button>
 
-  <script>
-    $('#repairerBox').on('click', function(e) {
-        $('#plansCard').fadeOut(500);
-        $('#repairerCard').fadeIn(500);
-    });
-
-    $('#customerBox').on('click', function(e) {
-        $('#plansCard').fadeIn(500);
-        $('#repairerCard').fadeOut(500);
-    });
-
-    $('.custom-file-input').on('change', function() { 
-        let fileName = $(this).val().split('\\').pop(); 
-        $(this).next('.custom-file-label').html(fileName); 
-    });
-  </script>
-</form>
-</div>
-
-{% endblock %}
+    {% endblock %}
+</body>
+</html>

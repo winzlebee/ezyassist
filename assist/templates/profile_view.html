@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+<style>
+   
+</style>
+{% endblock %}
+
 {% block content %}
+
+
 
 <form action='{% url 'profile' %}' method="POST">
     {% csrf_token %}

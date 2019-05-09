@@ -25,7 +25,7 @@
 
     .display-4 {
         padding-bottom: 20px;
-        color: rgba(249, 165, 0, 1);
+        color: #FF8000;
         font-weight: bold;
         text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
         margin: 80px auto;
@@ -40,6 +40,11 @@
         width: 100%;
     }
 
+    #signupbutton:hover {
+        background-color: #FF8000 !important;
+        color: #FFFFFF !important;
+    }
+
 </style>
 {% endblock %}
 
@@ -51,32 +56,40 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">EzyAssist</h1>
     <div class="lead">
-        <p>EzyAssist is the roadside assistance solution of the future.
-        Choose from a series of memberships and get help when you need it, where you need it!</p>
+        <p>
+            EzyAssist is the roadside assistance solution of the future.
+            Choose from a series of memberships and get help when you need it, where you need it!
+        </p>
     </div>
-   
+    <p class="lead">
+        <a class="btn btn-lg bg-custom border-custom" href="#membership" role="button" style="background-color:transparent;border-color:#FF8000;">Learn more</a>
+    </p>
+
 </div>
 
-<div style="text-align:center;position:relative;margin-top:220px;font-size:40px;font-weight:bold;">
-    Membership Options
+<div id="membership">
+    <div style="text-align:center;position:relative;margin-top:95px;font-size:40px;font-weight:bold;">
+        Membership Options
+    </div>
 </div>
-<div class="card-deck mb-3 text-center" style="width:50rem; height:26rem; margin: 20px auto;">
-
+<div class="card-deck text-center" style="width:50rem; height:26rem; margin: 20px auto;">
     {% for model in models %}
-    <div class="card mt-5 mb-4 shadow-sm">
-        <div class="card-header">
+    <div class="card mt-5 mb-4 border-custom bg-custom" style="background-color:white; border-radius:0;">
             <h4 class="my-0 font-weight-normal">{{ model.name }}</h4>
-        </div>
-        <div class="card-body">
-            <h1 class="card-title pricing-card-title">${{ model.yearlyPrice }}<small class="text-muted">/ year</small></h1>
+            <div vertical-align="center" style="width:100%">
+                <h1 class="card-title text-white pricing-card-title bg-custom {% if model.yearlyPrice == 0 %}" style="min-width:20rem; min-height:7rem;margin-top:20px;background-color:rgb(112,112,112);border-left:0;">
+                    ${{ model.yearlyPrice }}<br /><small class="text-custom" style="color:white;font-size:14px;"> per year</small>
+                    {% else %} bg-custom" style="margin-top:20px;background-color:#FF8000;min-width:20rem; min-height:7rem;"> ${{ model.yearlyPrice }}<br /><small class="text-custom" style="color:white;font-size:14px;"> per year</small> {% endif%}
+                </h1>
+            </div>
             <ul class="list-unstyled mt-3 mb-4">
                 <li>{% if model.numCallouts > 0 %} {{model.numCallouts}} Free Callouts{% else %} Unlimited Callouts{% endif %}*</li>
                 <li>Verified Repair Partners</li>
                 <li>1 Hour Guarantee</li>
             </ul>
-            <small class='mb-3 text-muted'>* ${{ model.calloutFee }} a callout after free callouts used.</small>
-            <button type="button" onclick="window.location.href='{% url 'signup' %}'" class="btn btn-lg btn-block {% if model.yearlyPrice > 0 %} btn-primary">Sign up {% else %} btn-outline-primary">Sign up for free {% endif %}</button>
-        </div>
+            <small class='mb-0 text-muted'>* ${{ model.calloutFee }} a callout after free callouts used.</small>
+            <button type="button" id="signupbutton" onclick="window.location.href='{% url 'signup' %}'" class="btn center-block btn-block border-custom bg-white {% if model.yearlyPrice > 0 %}" style="border-color:#FF8000;color:#FF8000; border-width:thick;border-radius:0;font-weight:bold;width:150px;margin: 30px auto;"> Sign up {% else %} bg-white" style="border-color:#FF8000; color:#FF8000; border-width:thick;border-radius:0;font-weight:bold;width:150px;margin: 30px auto;"> Sign up for free {% endif %}</button>
+      
     </div>
     {% endfor %}
 </div>
