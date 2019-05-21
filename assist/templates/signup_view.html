@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -34,6 +34,8 @@
                 width: 85%;
                 background-color: white;
                 flex: 0 0 auto;
+                margin-top: 50px;
+                margin-bottom: 50px;
             }
 
         #td1 {
@@ -174,6 +176,8 @@
                  
                     <td>
                         <h4 style="margin-left: 55px;color:rgba(20,20,20, .8); margin-top:20px;"><b>SIGN UP</b></h4>
+                        <a style="text-decoration: none; color: #ff8000;margin-left:55px; font-size:12px;" href="{% url 'index' %}">Already a member?</a>
+
                         <form action='{% url 'signup' %}' method="POST" enctype='multipart/form-data'>
                             {% csrf_token %}
                             <div class='row'>
@@ -205,8 +209,8 @@
                                             <small id="emailHelp" class="form-text text-muted">We have a very stringent privacy policy. We'll never share your home address.</small>
                                         </div>
                                     </div>
-                                   
-                               
+
+
                                     <div class="form-row form-group">
                                         <div class="col">
                                             <input type="password" class="form-control" name='password1' placeholder="Password">
@@ -216,17 +220,19 @@
                                         </div>
                                     </div>
                                     <div id="marginleft">
-                                    <div class="form-group">
-                                        <label><b>I am a...</b></label><br />
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" checked>
-                                            <label class="form-check-label" for="inlineRadio1">Customer</label>
+                                        <div class="form-group">
+                                            <label><b>I am a...</b></label><br />
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="isServicer" id="customerBox" value="False" checked>
+                                                <label class="form-check-label" for="inlineRadio1">Customer</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="isServicer" id="repairerBox" value="True">
+                                                <label class="form-check-label" for="inlineRadio2">Service Provider</label>
+                                            </div>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="isServicer" id="repairerBox" value="True">
-                                            <label class="form-check-label" for="inlineRadio2">Service Provider</label>
-                                        </div>
-                                    </div>
+
+                       
                                         <div style="padding-top:20px;" >
                                             <b>Plans</b>
                                         </div>
@@ -234,8 +240,10 @@
                                             {% for pricing in pricings %}
                                             <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
                                             {% endfor %}
-                                        </ul>
-                                        </div>
+                                        </ul>                 
+                                    </div>
+                                  
+
                                     <div id='repairerCard' style='display: none;' class="card">
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="customFile" name='document'>
@@ -254,6 +262,7 @@
                                 {{ fileErrors }}
                             </div>
                             {% endif %}
+
                             <div style="text-align: center;">
                                 <button type="submit" style="margin-bottom:20px;" class="btn">Sign Up</button>
                             </div>

@@ -25,6 +25,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Distance</th>
+                <th scope="col">Description</th>
                 <th scope="col">Status</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -34,6 +35,7 @@
             <tr>
                 <td>{{ request.id }}</td>
                 <td>{{ distance }}km</td>
+                <td>{{ request.request_details }}</td>
                 <td>
                 {% if request.isApproved %} Repairer on the way
                 {% else %} Open {% endif %}
