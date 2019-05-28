@@ -80,8 +80,8 @@ class AssistanceReview(models.Model):
         related_name='review_target',
     )
     
-    text_rating = models.TextField(max_length=200)
-    star_rating = models.IntegerField(default=5, blank=True)
+    text_rating = models.TextField(max_length=200, blank=True, null=True)
+    star_rating = models.IntegerField(default=5)
 
 class PricingModel(models.Model):
     name = models.CharField(max_length=50)
