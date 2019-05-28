@@ -98,6 +98,30 @@ def withdraw_view(request, withdraw_pk=None):
         withdraw.delete()
     return HttpResponseRedirect(reverse('dash'))
 
+# Finalize an assistance request, adding it to the past assistance requests database and allowing a rating to be left.
+@login_required
+def finalize_request(request, request_pk=None):
+    pass
+
+@login_required
+def approve_response(request, approval_pk=None):
+    # Respond to the request by setting its flag to true
+    response_toApprove = AssistanceApproval.objects.get(id=approval_pk)
+    response_toApprove.is_approved = True
+    response_toApprove.save()
+
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
+def view_responses(request, request_pk=None):
+    # Get the relevant response and check it belongs to the user
+    curr_request = AssistanceRequest.objects.get(id=request_pk)
+    view_responses_template = loader.get_template("responses_view.html")
+    context = {
+        "responses" : AssistanceApproval.objects.filter(request=request_pk)
+    }
+    return HttpResponse(view_responses_template.render(context, request))
+
 @login_required
 def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user

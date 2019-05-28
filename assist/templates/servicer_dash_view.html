@@ -38,11 +38,19 @@
                 <td>{{ request.request_details }}</td>
                 <td>
                 {% if request.isApproved %} 
+                {% if request.isClosed %}
+                Closed.
+                {% else %}
                 Awaiting Response...
-                {% else %} Open {% endif %}
+                {% endif %}
+                {% else %}
+                Open
+                {% endif %}
                 </td>
                 <td>
+                    {% if not request.isClosed %}
                     {% if own %} <a class="btn btn-secondary" href="{% url 'withdraw_response' request.id %}">Withdraw</button> {% else %} <a class="btn btn-primary" href="{% url 'respond' request.id %}">Respond</button> {% endif %}
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

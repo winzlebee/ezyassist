@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="p-5 container">
+<h2>Assistance Responses</h2>
+<p>Please select an assistance request to respond to, or choose to delete an assistance request.</p>
+
+<div class="row">
+{% for assistance_response in responses %}
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ assistance_response.repairer.get_full_name }}</h5>
+            <p class="card-text">{{ assistance_response.repairer.email }}</p>
+            <a href="{% url 'approve_response' assistance_response.id %}" class="btn btn-success">Accept</a>
+            <a href="#" class="btn btn-fail">Remove</a>
+        </div>
+    </div>
+</div>
+{% if forloop.counter|divisibleby:2 %}
+</div>
+<div class="row">
+{% endif %}
+
+{% endfor %}
+</div>
+ 
+</div>
+
+{% endblock %}

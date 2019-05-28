@@ -21,11 +21,21 @@
                 <td>{{ request.id }}</td>
                 <td>{{ request.latitude }}, {{ request.longitude }}</td>
                 <td>
-                {% if request.isApproved %} Repairer on the way
+                {% if request.isApproved %}
+                    {% if request.isClosed %}
+                    Repairer on the way.
+                    {% else %}
+                    Response Received
+                    {% endif %}
                 {% else %} Pending... {% endif %}
                 </td>
                 <td>
-                    <a class="btn btn-secondary" href="{% url 'withdraw' request.id %}">Withdraw</button>
+                    {% if request.isClosed %}
+                        <a class="btn btn-primary" href="{% url 'finalize_request' request.id %}">Mark Complete</a>
+                    {% else %}
+                        {% if request.isApproved %}<a class="btn btn-primary" href="{% url 'view_responses' request.id %}">View &raquo;</a>{% endif %}
+                        <a class="btn btn-secondary" href="{% url 'withdraw' request.id %}">Withdraw</button>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

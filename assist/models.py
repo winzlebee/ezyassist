@@ -28,6 +28,14 @@ class AssistanceRequest(models.Model):
     def __str__(self):
         return self.creator.email + "\t" + self.request_details
 
+    def isClosed(self):
+        reqs = AssistanceApproval.objects.filter(request=self)
+        for request in reqs:
+            if request.is_approved:
+                return True
+                
+        return False
+
     def isApproved(self):
         reqs = AssistanceApproval.objects.filter(request=self)
         return reqs.count() > 0
