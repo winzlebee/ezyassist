@@ -41,7 +41,7 @@ def login_view(request):
 
     if user is not None:
         auth.login(request, user)
-        return HttpResponseRedirect('/assist/dash')
+        return HttpResponseRedirect(reverse('dash'))
     else:
         return HttpResponseRedirect('/assist?failure=1')
 
@@ -101,6 +101,25 @@ def withdraw_view(request, withdraw_pk=None):
 @login_required
 def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user
+
+    # Check the service request came from the specified user
+    relevantRequest = AssistanceRequest.objects.get(id=respond_pk);
+
+    assistanceResponse = AssistanceApproval(repairer=request.user, request=relevantRequest)
+    assistanceResponse.save()
+
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
+def withdraw_response_view(request, request_pk=None):
+    # Withdraw an AssistanceApproval
+    ass_request = AssistanceRequest.objects.get(id=request_pk)
+    approvals = AssistanceApproval.objects.filter(request=ass_request, repairer=request.user)
+
+    # If the response belongs to the user, remove it
+    if approvals.count() > 0:
+        approvals[0].delete()
+
     return HttpResponseRedirect(reverse('dash'))
 
 @login_required
@@ -138,7 +157,7 @@ def dash_view(request):
         for r in AssistanceRequest.objects.all():
             dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
             if dist < targetDistance:
-                matchingRequests.append((r, round(dist, 2)))
+                matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
 
         context['requests'] = matchingRequests
         return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))
@@ -162,7 +181,7 @@ def profile_view(request):
         profile_form = ProfileForm(request.POST, instance=userInstance)
         if profile_form.is_valid():
             profile = profile_form.save()
-            return HttpResponseRedirect('/assist/dash')
+            return HttpResponseRedirect(reverse('dash'))
         else:
             context['hasErrors'] = True
 

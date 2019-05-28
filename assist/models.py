@@ -29,7 +29,16 @@ class AssistanceRequest(models.Model):
         return self.creator.email + "\t" + self.request_details
 
     def isApproved(self):
-        return AssistanceApproval.objects.get(request=self).exists()
+        reqs = AssistanceApproval.objects.filter(request=self)
+        return reqs.count() > 0
+
+    # Returns if the specified repairer responded to this request
+    def isRespondedBy(self, prof):
+        if self.isApproved():
+            if (AssistanceApproval.objects.get(request=self).repairer.pk == prof.pk):
+                return True
+
+        return False
     
 class AssistanceApproval(models.Model):
     repairer = models.ForeignKey(
@@ -38,6 +47,7 @@ class AssistanceApproval(models.Model):
     )
 
     request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default=False)
 
 # A review left for a user (either from a customer or an assistance professional)
 class AssistanceReview(models.Model):

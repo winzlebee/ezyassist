@@ -13,6 +13,7 @@ urlpatterns = [
     path('signup', views.signup_view, name='signup'),
     path('dash', views.dash_view, name='dash'),
     re_path(r'^withdraw/(?P<withdraw_pk>[0-9]+)/$', views.withdraw_view, name='withdraw'),
+    path('respond/withdraw/<int:request_pk>', views.withdraw_response_view, name='withdraw_response'),
     path('respond/<int:respond_pk>', views.respond_view, name='respond'),
 	path('Terms_and_Conditions', views.TandC, name='TandC'),
 	
