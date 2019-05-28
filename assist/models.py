@@ -24,6 +24,8 @@ class AssistanceRequest(models.Model):
     longitude = models.DecimalField(decimal_places=5, max_digits=8)
     lodge_time = models.DateTimeField(auto_now_add=True)
     request_details = models.TextField(max_length=200)
+
+    is_finalized = models.BooleanField(default=False)
     
     def __str__(self):
         return self.creator.email + "\t" + self.request_details
@@ -33,8 +35,11 @@ class AssistanceRequest(models.Model):
         for request in reqs:
             if request.is_approved:
                 return True
-                
+
         return False
+
+    def isFinalized(self):
+        return self.is_finalized
 
     def isApproved(self):
         reqs = AssistanceApproval.objects.filter(request=self)
@@ -70,10 +75,13 @@ class AssistanceReview(models.Model):
     target = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
         related_name='review_target',
     )
     
-    star_rating = models.IntegerField(default=5)
+    text_rating = models.TextField(max_length=200)
+    star_rating = models.IntegerField(default=5, blank=True)
 
 class PricingModel(models.Model):
     name = models.CharField(max_length=50)

@@ -101,7 +101,28 @@ def withdraw_view(request, withdraw_pk=None):
 # Finalize an assistance request, adding it to the past assistance requests database and allowing a rating to be left.
 @login_required
 def finalize_request(request, request_pk=None):
-    pass
+    finalize_template = loader.get_template("finalize_view.html")
+    toFinalize = AssistanceRequest.objects.get(id=request_pk)
+
+    context = {
+        'requestItem' : toFinalize
+    }
+
+    if request.method == 'POST':
+        user_form = LeaveReviewForm(request.POST)
+        user_form.creator = request.user
+        user_form.target = AssistanceApproval.objects.get(request=toFinalize).repairer
+
+        if user_form.is_valid():
+            user_form.save()
+
+            toFinalize.is_finalized = True
+            toFinalize.save()
+
+        # Create the review object and spit the user back to the dash
+        return HttpResponseRedirect(reverse('dash'))
+    else:
+        return HttpResponse(finalize_template.render(context, request))
 
 @login_required
 def approve_response(request, approval_pk=None):
@@ -180,13 +201,13 @@ def dash_view(request):
 
         for r in AssistanceRequest.objects.all():
             dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
-            if dist < targetDistance:
+            if dist < targetDistance and not r.isFinalized():
                 matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
 
         context['requests'] = matchingRequests
         return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))
     else:
-        context['requests'] = AssistanceRequest.objects.filter(creator=userInstance)
+        context['requests'] = AssistanceRequest.objects.filter(creator=userInstance, is_finalized=False)
         return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
 @login_required
