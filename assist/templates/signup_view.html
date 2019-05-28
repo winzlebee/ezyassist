@@ -232,15 +232,16 @@
                                             </div>
                                         </div>
 
-                       
-                                        <div style="padding-top:20px;" >
-                                            <b>Plans</b>
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-                                            {% for pricing in pricings %}
-                                            <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
-                                            {% endfor %}
-                                        </ul>                 
+                                        <span id="plansCard">
+                                            <div style="padding-top:20px;" >
+                                                <b>Plans</b>
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                {% for pricing in pricings %}
+                                                <li class="list-group-item"><input class="form-check-input" type="radio" name="subscription" value="{{ pricing.id }}" required checked><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                                                {% endfor %}
+                                            </ul>             
+                                        </span>    
                                     </div>
                                   
 
