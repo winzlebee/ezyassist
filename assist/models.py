@@ -83,6 +83,9 @@ class AssistanceReview(models.Model):
     text_rating = models.TextField(max_length=200, blank=True, null=True)
     star_rating = models.IntegerField(default=5)
 
+    def __str__(self):
+        return creator.name + "->" + target.name + ": " + self.star_rating + ", " + self.text_rating
+
 class PricingModel(models.Model):
     name = models.CharField(max_length=50)
     yearlyPrice = models.DecimalField(decimal_places=2, max_digits=5)

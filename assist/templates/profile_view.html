@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block scripts %}
-<style>
-   
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block content %}
@@ -12,7 +10,6 @@
 <div class='container'>
 <form action='{% url 'profile' %}' method="POST">
     {% csrf_token %}
-    <div class='row'>
         <div class='col p-5'>
             <div class='form-group'>
                 {% if form.address.errors %}<div class='alert alert-danger' role='alert'>{{ form.address.errors }}</div>{% endif %}
@@ -37,9 +34,28 @@
             </div>
             {% else %}
             <input type="hidden" name="{{ form.subscription.html_name }}" value="0" />
+            <input type="hidden" name="{{ form.isServicer.html_name }}" value="true" />
             <a href="{{ userProfile.optionalDocument.document.url }}" class='btn btn-primary'>View Documentation &raquo;</a>
+            <div class="m-5">
             {% endif %}
-        </div>
+            <div>
+                <h2>Reviews</h2>
+                {% if reviews %}
+                {% for assistance_review, range in reviews %}
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ assistance_review.creator.get_full_name }}</h5>
+                            <p class="card-text">{{ assistance_review.text_rating }}</p>
+                            {% for star in range %}
+                            <span class="fa fa-star"></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <p>No reviews to display</p>
+                {% endif %}
+            </div>
     </div>
     {% if hasErrors %}
     <div class='alert alert-warning'>

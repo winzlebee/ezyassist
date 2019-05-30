@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 
 import requests
 import json
@@ -110,11 +111,12 @@ def finalize_request(request, request_pk=None):
 
     if request.method == 'POST':
         user_form = LeaveReviewForm(request.POST)
-        user_form.creator = request.user
-        user_form.target = AssistanceApproval.objects.get(request=toFinalize).repairer
 
         if user_form.is_valid():
-            user_form.save()
+            fin_model = user_form.save()
+            fin_model.creator = request.user
+            fin_model.target = AssistanceApproval.objects.get(request=toFinalize).repairer
+            fin_model.save()
 
             toFinalize.is_finalized = True
             toFinalize.save()
@@ -137,9 +139,17 @@ def approve_response(request, approval_pk=None):
 def view_responses(request, request_pk=None):
     # Get the relevant response and check it belongs to the user
     curr_request = AssistanceRequest.objects.get(id=request_pk)
+    request_array = []
+
+    assistance_approvals = AssistanceApproval.objects.filter(request=request_pk)
+
+    for service_request in assistance_approvals:
+        relevant_reviews = AssistanceReview.objects.filter(target=service_request.repairer)
+        request_array.append((service_request, round(relevant_reviews.aggregate(Avg('star_rating'))['star_rating__avg'], 2), relevant_reviews.count()))
+
     view_responses_template = loader.get_template("responses_view.html")
     context = {
-        "responses" : AssistanceApproval.objects.filter(request=request_pk)
+        "responses" : request_array
     }
     return HttpResponse(view_responses_template.render(context, request))
 
@@ -215,17 +225,26 @@ def profile_view(request):
     template = loader.get_template('profile_view.html')
     userInstance = UserProfileModel.objects.get(user=request.user)
 
+    assistance_reviews = AssistanceReview.objects.filter(target=request.user)
+
+    ass_array = []
+    for review in assistance_reviews:
+        ass_array.append((review, range(0, review.star_rating)))
+
     context = {
         'form':ProfileForm(instance=userInstance),
         'userProfile':userInstance,
         'hasErrors':False,
         'pricings' : PricingModel.objects.order_by('yearlyPrice'),
+        'reviews' : ass_array,
     }
 
     if request.method == 'POST':
         profile_form = ProfileForm(request.POST, instance=userInstance)
         if profile_form.is_valid():
             profile = profile_form.save()
+            profile.isServicer = userInstance.isServicer
+            profile.save()
             return HttpResponseRedirect(reverse('dash'))
         else:
             context['hasErrors'] = True
