@@ -32,9 +32,11 @@
                 {{ request.path.basename }}
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     {% if user.is_authenticated %}
+                    <!--
                     <li class="nav-item {% if active == 'lodge' %}active{% endif %}">
                         <a class="nav-link text-dark" href="/assist/lodge">Lodge</a>
                     </li>
+                    -->
                     {% endif %}
                 </ul>
             </div>

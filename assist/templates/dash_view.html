@@ -4,8 +4,9 @@
 
 <div class='p-5 container'>
     <h1 class='display-2'>Dashboard</h1>
-    <h2>You currently have {{ requests|length }} lodged assistance requests.</h2>
+    <h2>You currently have {% if requests %}a{% else %}no{% endif %} lodged assistance request.</h2>
     {% if requests %}
+    <button class="btn btn-primary" onClick="window.location.reload();">Refresh</button>
     <table class="table">
         <thead>
             <tr>
@@ -43,6 +44,7 @@
     </table>
     {% endif %}
     <div class='row'>
+        {% if requests|length == 0 %}
         <div class='col-sm-6'>
             <div class='card'>
                 <div class='card-body'>
@@ -52,6 +54,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         <div class='col-sm-6'>
             <div class='card'>
                 <div class='card-body'>

@@ -11,10 +11,10 @@
 - [x] Customers can accept professional help once they choose an assistance request
 - [x] Customers can finalize and leave a star rating
 - [ ] Edit name and email in profile settings
-- [ ] View own rating in profile view and show rating of professionals when viewing requests
-- [ ] Leave reviews for customers in addition to servicers
+- [x] View own rating in profile view and show rating of professionals when viewing requests
+- [-] Leave reviews for customers in addition to servicers
 - [ ] Re-Style admin panel
 - [ ] Admins need to approve servicers before they can work
-- [ ] Disallow multiple assistance requests
+- [x] Disallow multiple assistance requests
 - [ ] Account page for generating reports
 - [ ] Account page to view professionals for customers
