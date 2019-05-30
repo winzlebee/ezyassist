@@ -10,11 +10,16 @@
 - [x] Professionals can review and select customer applications within a radius
 - [x] Customers can accept professional help once they choose an assistance request
 - [x] Customers can finalize and leave a star rating
-- [ ] Edit name and email in profile settings
 - [x] View own rating in profile view and show rating of professionals when viewing requests
-- [-] Leave reviews for customers in addition to servicers
-- [ ] Re-Style admin panel
-- [ ] Admins need to approve servicers before they can work
 - [x] Disallow multiple assistance requests
-- [ ] Account page for generating reports
-- [ ] Account page to view professionals for customers
+- [ ] View reviews on servicer by clicking their name in requests view
+- [ ] Send custom amount to customers when making assistance approvals
+- [ ] Account page for generating reports - all payments/assistance requests
+- [ ] Search users/etc in admin panel
+- [ ] View reports in admin panel
+- [ ] Re-Style admin panel
+
+## Stretch Goals
+
+- [-] Admins need to approve servicers before they can work
+- [-] Leave reviews for customers in addition to servicers
