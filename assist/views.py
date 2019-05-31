@@ -175,14 +175,20 @@ def ratings_view(request, profile_id=None):
 @login_required
 def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user
-
-    # Check the service request came from the specified user
     relevantRequest = AssistanceRequest.objects.get(id=respond_pk);
 
-    assistanceResponse = AssistanceApproval(repairer=request.user, request=relevantRequest)
-    assistanceResponse.save()
+    if request.method == "POST":
+        # Check the service request came from the specified user
+        assistanceResponse = AssistanceApproval(repairer=request.user, request=relevantRequest)
+        assistanceResponse.save()
 
-    return HttpResponseRedirect(reverse('dash'))
+        return HttpResponseRedirect(reverse('dash'))
+
+    # Otherwise, we display the form related to responding to requests
+    response_template = loader.get_template("respond_view.html")
+
+    return HttpResponse(response_template.render({"request" : relevantRequest }, request))
+
 
 @login_required
 def withdraw_response_view(request, request_pk=None):
@@ -216,22 +222,34 @@ def dash_view(request):
             context['dist_form'] = distance_form
 
     if profileInstance.isServicer:
-            
+        
+        success_flag = False
+
         # Use the requests library to make a request to get the latitude and longitude
-        response = requests.get('https://api.opencagedata.com/geocode/v1/json?q='+ profileInstance.address + '&key=6570588bba6b4f288c8315c735b08c59')
+        try:
+            response = requests.get('https://api.opencagedata.com/geocode/v1/json?q='+ profileInstance.address + '&key=9b31b6d3f4264926b4440dbd81ea80c6', timeout=10.0)
+            success_flag = True
+        except requests.ReadTimeout:
+            success_flag = False
 
         # Response is in JSON - parse to get the address
-        if response.status_code == 200:
-            json_object = json.loads(response.content)
-            s_latitude = float(json_object['results'][0]['geometry']['lat'])
-            s_longitude = float(json_object['results'][0]['geometry']['lng'])
+        if success_flag:
+            if response.status_code == 200:
+                json_object = json.loads(response.content)
+                s_latitude = float(json_object['results'][0]['geometry']['lat'])
+                s_longitude = float(json_object['results'][0]['geometry']['lng'])
+                success_flag = True
 
         matchingRequests = []
 
         for r in AssistanceRequest.objects.all():
-            dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
-            if dist < targetDistance and not r.isFinalized():
-                matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
+            if success_flag:
+                dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
+                if dist < targetDistance and not r.isFinalized():
+                    matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
+            elif not r.isFinalized():
+                # Handle the case where we don't get the data
+                matchingRequests.append((r, 0, r.isRespondedBy(request.user)))
 
         context['requests'] = matchingRequests
         return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))

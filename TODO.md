@@ -21,5 +21,5 @@
 
 ## Stretch Goals
 
-- [-] Admins need to approve servicers before they can work
-- [-] Leave reviews for customers in addition to servicers
+- [ ] Admins need to approve servicers before they can work
+- [ ] Leave reviews for customers in addition to servicers

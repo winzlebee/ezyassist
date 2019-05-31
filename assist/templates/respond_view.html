@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class='container'>
+    <h1>Respond to request</h1>
+    <div>
+        <p class="sm">{{ request.request_details }}</p>
+        <form action="{% url 'respond' request.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Enter your repair quote</label>
+                <input type="number" class="form-control mb-2 mr-sm-2" step=".01" placeholder="Quote Amount" />
+                <small class="form-text text-muted">Please read the description carefully. You can always withdraw later.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" onClick="window.history.back();" class="btn btn-secondary">Go Back</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

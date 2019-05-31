@@ -38,17 +38,17 @@
                 <td>{{ request.request_details }}</td>
                 <td>
                 {% if request.isApproved %} 
-                {% if request.isClosed %}
-                {% if own %}
-                Waiting for customer to mark complete.
+                    {% if request.isClosed %}
+                        {% if own %}
+                            Waiting for customer to mark complete.
+                        {% else %}
+                            Closed.
+                        {% endif %}
+                    {% else %}
+                        Awaiting Response...
+                    {% endif %}
                 {% else %}
-                Closed.
-                {% endif %}
-                {% else %}
-                Awaiting Response...
-                {% endif %}
-                {% else %}
-                Open
+                    Open
                 {% endif %}
                 </td>
                 <td>
