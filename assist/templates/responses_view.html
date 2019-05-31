@@ -11,11 +11,11 @@
 <div class="col-sm-6">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ assistance_response.repairer.get_full_name }}</h5>
+            <h5 class="card-title"><a href="{% url 'ratings' assistance_response.repairer.id %}" >{{ assistance_response.repairer.get_full_name }}</a></h5>
             <p class="card-text small"><b>Average Rating: </b> {{ avgRating }} from {{ ratingCount }} reviews.</p>
             <p class="card-text"><b>Email: </b>{{ assistance_response.repairer.email }}</p>
             <a href="{% url 'approve_response' assistance_response.id %}" class="btn btn-success">Accept</a>
-            <a href="#" class="btn btn-fail">Remove</a>
+            <a href="{% url 'remove_response' assistance_response.id %}" class="btn btn-fail">Remove</a>
         </div>
     </div>
 </div>

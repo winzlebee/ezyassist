@@ -154,6 +154,25 @@ def view_responses(request, request_pk=None):
     return HttpResponse(view_responses_template.render(context, request))
 
 @login_required
+def remove_response(request, approval_pk=None):
+    # Removing a response deletes it on the admin and user side
+    curr_response = AssistanceApproval.objects.get(id=approval_pk)
+    curr_response.delete()
+
+    return HttpResponseRedirect(reverse('dash'))
+
+@login_required
+def ratings_view(request, profile_id=None):
+    # Find all ratings related to this professional
+    ratings_user = User.objects.get(id=profile_id)
+    ratings = getRatingsArray(ratings_user)
+
+    ratings_template = loader.get_template("ratings_view.html")
+
+    return HttpResponse(ratings_template.render({"user": ratings_user, "ratings": ratings}, request))
+
+
+@login_required
 def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user
 
@@ -220,23 +239,26 @@ def dash_view(request):
         context['requests'] = AssistanceRequest.objects.filter(creator=userInstance, is_finalized=False)
         return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
-@login_required
-def profile_view(request):
-    template = loader.get_template('profile_view.html')
-    userInstance = UserProfileModel.objects.get(user=request.user)
-
-    assistance_reviews = AssistanceReview.objects.filter(target=request.user)
+def getRatingsArray(user):
+    assistance_reviews = AssistanceReview.objects.filter(target=user)
 
     ass_array = []
     for review in assistance_reviews:
         ass_array.append((review, range(0, review.star_rating)))
+
+    return ass_array
+
+@login_required
+def profile_view(request):
+    template = loader.get_template('profile_view.html')
+    userInstance = UserProfileModel.objects.get(user=request.user)
 
     context = {
         'form':ProfileForm(instance=userInstance),
         'userProfile':userInstance,
         'hasErrors':False,
         'pricings' : PricingModel.objects.order_by('yearlyPrice'),
-        'reviews' : ass_array,
+        'reviews' : getRatingsArray(request.user),
     }
 
     if request.method == 'POST':

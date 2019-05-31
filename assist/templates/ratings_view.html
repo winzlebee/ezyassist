@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block content %}
+
+
+<div class='container'>
+    <h1>Reviews for {{ user.get_full_name }}</h1>
+    <div>
+        <h2>Reviews</h2>
+        {% if ratings %}
+        {% for assistance_review, range in ratings %}
+            <div class="card w-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ assistance_review.creator.get_full_name }}</h5>
+                    <p class="card-text">{{ assistance_review.text_rating }}</p>
+                    {% for star in range %}
+                    <span class="fa fa-star"></span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+            <p>No reviews to display</p>
+        {% endif %}
+    </div>
+    <a onClick="window.history.back();" class="btn btn-secondary">Go Back</a>
+</div>
+
+{% endblock %}
