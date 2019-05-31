@@ -11,12 +11,15 @@
             {% csrf_token %}
             <div class="form-group">
                 <label>Enter your repair quote</label>
-                <input type="number" class="form-control mb-2 mr-sm-2" step=".01" placeholder="Quote Amount" />
+                <input name="quote" type="number" class="form-control mb-2 mr-sm-2" step=".01" placeholder="Quote Amount" />
                 <small class="form-text text-muted">Please read the description carefully. You can always withdraw later.</small>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" onClick="window.history.back();" class="btn btn-secondary">Go Back</button>
         </form>
+        {% if errors %}
+        <div class="alert alert-primary">Please enter a quote.</div>
+        {% endif %}
     </div>
 </div>
 

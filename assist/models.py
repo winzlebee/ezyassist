@@ -57,9 +57,12 @@ class AssistanceApproval(models.Model):
     repairer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
 
-    request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE)
+    quote = models.DecimalField(decimal_places=2, max_digits=6)
+    request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
 
 # A review left for a user (either from a customer or an assistance professional)

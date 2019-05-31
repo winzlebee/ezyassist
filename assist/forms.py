@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserProfileModel, Document, AssistanceRequest, AssistanceReview
+from .models import UserProfileModel, Document, AssistanceRequest, AssistanceReview, AssistanceApproval
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -16,6 +16,11 @@ class LeaveReviewForm(forms.ModelForm):
     class Meta:
         model = AssistanceReview
         fields = ('star_rating', 'text_rating')
+
+class CreateApprovalForm(forms.ModelForm):
+    class Meta:
+        model = AssistanceApproval
+        fields = ('quote',)
 
 class AssistanceRequestForm(forms.ModelForm):
     class Meta:

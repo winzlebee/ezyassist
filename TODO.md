@@ -13,7 +13,7 @@
 - [x] View own rating in profile view and show rating of professionals when viewing requests
 - [x] Disallow multiple assistance requests
 - [x] View reviews on servicer by clicking their name in requests view
-- [ ] Send custom amount to customers when making assistance approvals
+- [x] Send custom amount to customers when making assistance approvals
 - [ ] Account page for generating reports - all payments/assistance requests
 - [ ] Search users/etc in admin panel
 - [ ] View reports in admin panel

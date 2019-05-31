@@ -12,6 +12,7 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title"><a href="{% url 'ratings' assistance_response.repairer.id %}" >{{ assistance_response.repairer.get_full_name }}</a></h5>
+            <p><b>Quote: </b> ${{ assistance_response.quote }} </p>
             <p class="card-text small"><b>Average Rating: </b> {{ avgRating }} from {{ ratingCount }} reviews.</p>
             <p class="card-text"><b>Email: </b>{{ assistance_response.repairer.email }}</p>
             <a href="{% url 'approve_response' assistance_response.id %}" class="btn btn-success">Accept</a>

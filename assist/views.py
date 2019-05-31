@@ -177,17 +177,27 @@ def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user
     relevantRequest = AssistanceRequest.objects.get(id=respond_pk);
 
+    context = {"request" : relevantRequest }
+
     if request.method == "POST":
         # Check the service request came from the specified user
-        assistanceResponse = AssistanceApproval(repairer=request.user, request=relevantRequest)
-        assistanceResponse.save()
+        response_form = CreateApprovalForm(request.POST)
 
-        return HttpResponseRedirect(reverse('dash'))
+        if response_form.is_valid():
+            assistanceResponse = response_form.save()
+
+            assistanceResponse.repairer = request.user
+            assistanceResponse.request = relevantRequest
+            assistanceResponse.save()
+
+            return HttpResponseRedirect(reverse('dash'))
+        else:
+            context['errors'] = True
 
     # Otherwise, we display the form related to responding to requests
     response_template = loader.get_template("respond_view.html")
 
-    return HttpResponse(response_template.render({"request" : relevantRequest }, request))
+    return HttpResponse(response_template.render(context, request))
 
 
 @login_required
