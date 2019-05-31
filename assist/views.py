@@ -251,7 +251,8 @@ def dash_view(request):
                 # Handle the case where we don't get the data
                 matchingRequests.append((r, 0, r.isRespondedBy(request.user)))
 
-        context['requests'] = matchingRequests
+
+        context['requests'] = sorted(matchingRequests, key=lambda req: req[1])
         return HttpResponse(loader.get_template('servicer_dash_view.html').render(context, request))
     else:
         context['requests'] = AssistanceRequest.objects.filter(creator=userInstance, is_finalized=False)
