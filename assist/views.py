@@ -199,6 +199,33 @@ def respond_view(request, respond_pk=None):
 
     return HttpResponse(response_template.render(context, request))
 
+@login_required
+def reports_view(request):
+    user_model = UserProfileModel.objects.get(user=request.user)
+    reports_template = loader.get_template("generate_reports_view.html")
+
+    return HttpResponse(reports_template.render({"isServicer" : user_model.isServicer}, request))
+
+@login_required
+def service_report_view(request):
+    user_profile = UserProfileModel.objects.get(user=request.user)
+    template = loader.get_template("service_report_view.html")
+
+    service_entries = []
+    if user_profile.isServicer:
+        relevant_reports = AssistanceApproval.objects.filter(repairer=request.user, is_approved=True)
+        for report in relevant_reports:
+            if report.request.is_finalized:
+                service_entries.append((report.request.lodge_time, report.quote, report.request.request_details))
+    else:
+        relevant_requests = AssistanceRequest.objects.filter(creator=request.user, is_finalized=True)
+        for ass_request in relevant_requests:
+            r_approval = AssistanceApproval.objects.get(request=ass_request)
+            service_entries.append((ass_request.lodge_time, r_approval.quote, ass_request.request_details))
+
+    service_entries = sorted(service_entries, key=lambda req: req[0], reverse=True)
+
+    return HttpResponse(template.render({'entries' : service_entries}, request))
 
 @login_required
 def withdraw_response_view(request, request_pk=None):
