@@ -87,7 +87,7 @@ class AssistanceReview(models.Model):
     star_rating = models.IntegerField(default=5)
 
     def __str__(self):
-        return creator.name + "->" + target.name + ": " + self.star_rating + ", " + self.text_rating
+        return self.creator.get_full_name() + "->" + self.target.get_full_name() + ": " + str(self.star_rating) + ", " + self.text_rating
 
 class PricingModel(models.Model):
     name = models.CharField(max_length=50)
@@ -101,9 +101,6 @@ class PricingModel(models.Model):
 class Document(models.Model):
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.uploaded_at
 
 # Represents a user profile model, which will be attached to all user models.
 class UserProfileModel(models.Model):

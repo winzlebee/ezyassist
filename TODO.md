@@ -17,12 +17,12 @@
 - [x] Account page for generating reports - all payments/assistance requests (make sure to account for free services)
 - [x] Add plate number to table for servicers
 - [x] Accept bank details for servicers and card number for customers
-- [ ] Search users/etc in admin panel
-- [ ] View reports in admin panel
-- [ ] Re-Style admin panel
+- [x] Search users/etc in admin panel
+- [x] Re-Style admin panel
 
 ## Stretch Goals
 
+- [ ] View reports in admin panel
 - [ ] Payment report can be filtered by month
 - [ ] Store payment details in the database
 - [ ] Admins need to approve servicers before they can work
