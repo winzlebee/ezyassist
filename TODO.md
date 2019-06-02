@@ -16,7 +16,7 @@
 - [x] Send custom amount to customers when making assistance approvals
 - [x] Account page for generating reports - all payments/assistance requests (make sure to account for free services)
 - [x] Add plate number to table for servicers
-- [ ] Accept bank details for servicers and card number for customers
+- [x] Accept bank details for servicers and card number for customers
 - [ ] Search users/etc in admin panel
 - [ ] View reports in admin panel
 - [ ] Re-Style admin panel
@@ -24,6 +24,7 @@
 ## Stretch Goals
 
 - [ ] Payment report can be filtered by month
+- [ ] Store payment details in the database
 - [ ] Admins need to approve servicers before they can work
 - [ ] Admin remove inappropriate reviews
 - [ ] Date on reviews
