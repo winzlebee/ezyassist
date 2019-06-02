@@ -145,7 +145,13 @@ def view_responses(request, request_pk=None):
 
     for service_request in assistance_approvals:
         relevant_reviews = AssistanceReview.objects.filter(target=service_request.repairer)
-        request_array.append((service_request, round(relevant_reviews.aggregate(Avg('star_rating'))['star_rating__avg'], 2), relevant_reviews.count()))
+        
+        if relevant_reviews:
+            review_average = round(relevant_reviews.aggregate(Avg('star_rating'))['star_rating__avg'], 2)
+        else:
+            review_average = 0
+        
+        request_array.append((service_request, review_average, relevant_reviews.count()))
 
     view_responses_template = loader.get_template("responses_view.html")
     context = {

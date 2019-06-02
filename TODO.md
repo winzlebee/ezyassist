@@ -15,6 +15,7 @@
 - [x] View reviews on servicer by clicking their name in requests view
 - [x] Send custom amount to customers when making assistance approvals
 - [ ] Account page for generating reports - all payments/assistance requests (make sure to account for free services)
+- [ ] Accept bank details for servicers and card number for customers
 - [ ] Search users/etc in admin panel
 - [ ] View reports in admin panel
 - [ ] Re-Style admin panel
