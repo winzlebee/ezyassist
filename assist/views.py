@@ -334,13 +334,14 @@ def dash_view(request):
         matchingRequests = []
 
         for r in AssistanceRequest.objects.all():
+            plateNum = UserProfileModel.objects.get(user=r.creator).registration
             if success_flag:
                 dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
                 if dist < targetDistance and not r.isFinalized():
-                    matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
+                    matchingRequests.append((r, plateNum, round(dist, 2), r.isRespondedBy(request.user)))
             elif not r.isFinalized():
                 # Handle the case where we don't get the data
-                matchingRequests.append((r, 0, r.isRespondedBy(request.user)))
+                matchingRequests.append((r, plateNum, 0, r.isRespondedBy(request.user)))
 
 
         context['requests'] = sorted(matchingRequests, key=lambda req: req[1])
