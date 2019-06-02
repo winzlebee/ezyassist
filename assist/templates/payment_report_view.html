@@ -11,7 +11,7 @@
     <thead class="thead-dark">
         <tr>
         <th scope="col">#</th>
-        <th scope="col">Date</th>
+        <th scope="col">Date/Time</th>
         <th scope="col">Amount</th>
         {% if isServicer %}
         <th scope="col">Payment Processed</th>
@@ -23,14 +23,17 @@
     {% for date, amount, plan in payments %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ date }}</td>
+      <td>
+      {% ifchanged date.date %} {{ date.date }} <br /> {% endifchanged %}
+      {{ date|date:"P" }}
+      </td>
       <td>${{ amount }}</td>
       <td>{{ plan|yesno }}</td>
     </tr>
     {% endfor %}
     <tr>
       <th scope="row">Total</th>
-      <td>{{ entries|first|first|date:"F" }}</td>
+      <td>{{ entries|first|first|date:'F' }}</td>
       <td>${{ totalCost }}</td>
     </tr>
     </table>

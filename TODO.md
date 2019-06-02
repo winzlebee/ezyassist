@@ -23,6 +23,7 @@
 
 ## Stretch Goals
 
+- [ ] Payment report can be filtered by month
 - [ ] Admins need to approve servicers before they can work
 - [ ] Admin remove inappropriate reviews
 - [ ] Date on reviews
