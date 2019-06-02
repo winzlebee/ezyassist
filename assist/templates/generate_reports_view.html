@@ -19,9 +19,13 @@
         <h5 class="card-title">Payment History</h5>
         <p class="card-text">View a report of all payments that have been processed for your account.</p>
         <p class="card-text"><small class="text-muted">Linked directly to payment services.</small></p>
-        <a href="" class='btn btn-secondary'>View &raquo;</a>
+        <a href="{% url 'payment_report' %}" class='btn btn-secondary'>View &raquo;</a>
         </div>
     </div>
+    </div>
+    <div class="mt-5">
+        <a href="{% url 'dash' %}" class="btn btn-primary btn-lg">Dashboard</a>
+        <a href="#" onClick="window.history.back();" class="btn btn-secondary btn-lg">Go Back</a>
     </div>
 </div>
 

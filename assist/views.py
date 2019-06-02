@@ -213,6 +213,54 @@ def reports_view(request):
     return HttpResponse(reports_template.render({"isServicer" : user_model.isServicer}, request))
 
 @login_required
+def payment_report_view(request):
+    # Get the request history corresponding to this customer
+    user_profile = UserProfileModel.objects.get(user=request.user)
+
+    payments_list = []
+    totalCost = 0
+
+    if user_profile.isServicer:
+
+        # If it's a servicer, we just aggregate all service approval costs
+        service_approvals = AssistanceApproval.objects.filter(repairer=request.user, is_approved=True)
+        if service_approvals:
+            for approval in service_approvals:
+                payments_list.append((approval.request.lodge_time, approval.quote, True))
+                totalCost += approval.quote
+        
+    else:
+        # A customer however requires we aggregate them and assign them a value depending on if they are covered by the plan.
+        service_requests = AssistanceRequest.objects.filter(creator=request.user, is_finalized=True).order_by('-lodge_time')
+        relevant_subscription = PricingModel.objects.get(id=(user_profile.subscription))
+        if service_requests:
+            countForYear = 0
+            prevYear = service_requests[0].lodge_time.year
+            for service_request in service_requests:
+                # Get the AssistanceApproval corresponding to this request
+                relevant_approval = AssistanceApproval.objects.get(request=service_request, is_approved=True)
+                
+                # Aggregate all the times the request has been made for this year and discount them
+                flag = countForYear < relevant_subscription.numCallouts
+
+                if service_request.lodge_time.year != prevYear:
+                    countForYear = 0
+
+                countForYear += 1
+
+                payments_list.append((service_request.lodge_time, relevant_approval.quote, flag))
+                totalCost += relevant_approval.quote
+
+    template = loader.get_template("payment_report_view.html")
+    context = {
+        "isServicer" : user_profile.isServicer,
+        "payments" : payments_list,
+        "totalCost" : totalCost
+    }
+
+    return HttpResponse(template.render(context, request))
+
+@login_required
 def service_report_view(request):
     user_profile = UserProfileModel.objects.get(user=request.user)
     template = loader.get_template("service_report_view.html")
@@ -302,7 +350,7 @@ def dash_view(request):
         return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
 def getRatingsArray(user):
-    assistance_reviews = AssistanceReview.objects.filter(target=user)
+    assistance_reviews = AssistanceReview.objects.filter(target=user).order_by('-id')
 
     ass_array = []
     for review in assistance_reviews:

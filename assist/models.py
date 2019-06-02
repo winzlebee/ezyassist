@@ -102,6 +102,9 @@ class Document(models.Model):
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.uploaded_at
+
 # Represents a user profile model, which will be attached to all user models.
 class UserProfileModel(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -110,3 +113,6 @@ class UserProfileModel(models.Model):
     isServicer = models.BooleanField(default=False)
     subscription = models.IntegerField(default=0)
     optionalDocument = models.OneToOneField(Document, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.user.get_full_name()

@@ -14,7 +14,8 @@
 - [x] Disallow multiple assistance requests
 - [x] View reviews on servicer by clicking their name in requests view
 - [x] Send custom amount to customers when making assistance approvals
-- [ ] Account page for generating reports - all payments/assistance requests (make sure to account for free services)
+- [x] Account page for generating reports - all payments/assistance requests (make sure to account for free services)
+- [ ] Add plate number to table for servicers
 - [ ] Accept bank details for servicers and card number for customers
 - [ ] Search users/etc in admin panel
 - [ ] View reports in admin panel
@@ -23,4 +24,5 @@
 ## Stretch Goals
 
 - [ ] Admins need to approve servicers before they can work
-- [ ] Leave reviews for customers in addition to servicers
+- [ ] Admin remove inappropriate reviews
+- [ ] Date on reviews

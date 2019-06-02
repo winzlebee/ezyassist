@@ -28,6 +28,10 @@
     {% else %}
     <p>No entries to display.</p>
     {% endif %}
+    <div class="mt-5">
+      <a href="{% url 'dash' %}" class="btn btn-primary btn-lg">Dashboard</a>
+      <a href="#" onClick="window.history.back();" class="btn btn-secondary btn-lg">Go Back</a>
+    </div>
 </div>
 
 {% endblock %}
