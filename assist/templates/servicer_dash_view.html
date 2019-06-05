@@ -1,83 +1,123 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block scripts %}
+<style>
+    h5 {
+        color: #FF8000;
+    }
 
-<div class='p-5 container'>
-    <h1 class='display-2'>Dashboard</h1>
-    <p class='lead'>
-        Currently Active Service Requests
-    </p>
-    <form action="{% url 'dash' %}" method="POST">
-        {% csrf_token %}
-        <div class='form-row align-items-center'>
-            <label for='radius' class='col-sm-2 col-form-label col-form-label-sm'>Show Within Distance</label>
-            <div class='col-sm-6'>
-                {{ dist_form.as_table }}
-            </div>
-            <div class='col-sm-2'>
-                <button class='btn btn-sm btn-primary' type='submit'>Refresh</button>
-            </div>
-        </div>
-    </form>
-    {% if requests %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Distance</th>
-                <th scope="col">Description</th>
-                <th scope="col">Status</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for request, distance, own in requests %}
-            <tr>
-                <td>{{ request.id }}</td>
-                <td>{{ distance }}km</td>
-                <td>{{ request.request_details }}</td>
-                <td>
-                {% if request.isApproved %} 
-                    {% if request.isClosed %}
-                        {% if own %}
-                            Waiting for customer to mark complete.
-                        {% else %}
-                            Closed.
-                        {% endif %}
-                    {% else %}
-                        Awaiting Response...
-                    {% endif %}
-                {% else %}
-                    Open
-                {% endif %}
-                </td>
-                <td>
-                    {% if own %}
-                        {% if not request.isClosed %}
-                        <a class="btn btn-secondary" href="{% url 'withdraw_response' request.id %}">Withdraw</button>
-                        {% endif %}
-                    {% else %} 
-                        {% if not request.isClosed %}
-                        <a class="btn btn-primary" href="{% url 'respond' request.id %}">Respond</button>
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-    <div class='row'>
-        <div class='container mt-5'>
-            <div class='card'>
-                <div class='card-body'>
-                    <h5 class='card-title'>Your Account</h5>
-                    <p class='card-text'>Check your past assistance responses, and transaction logs.</p>
-                    <a href="{% url 'lodge' %}" class='btn btn-secondary'>View &raquo;</a>
+    .card {
+        border-radius: 0;
+        border-width: 3px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        min-height: 120px;
+        font-size: 18px;
+    }
+
+    #card1 {
+        border-color: rgb(112,112,112);
+        font-size: 18px;
+    }
+
+    #card2 {
+        border-color: rgb(112,112,112);
+        background-color: rgb(112,112,112);
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid bg-custom" style="background-color:#FF8000; background-size:270%;max-height:170px;">
+    <div class="container-fluid mt-0">
+        <h1 style="color:#fff" class="ml-5 align-middle">
+            <span itemprop="headline">DASHBOARD</span>
+        </h1>
+    </div>
+</div>
+
+<div class='p-3 container'>
+
+    <h5>Currently Active Service Requests</h5>
+    <div class="card border-custom" id="card1">
+        <div class="card-body">
+            <form action="{% url 'dash' %}" method="POST">
+                {% csrf_token %}
+                <div class='form-row align-items-center'>
+                    Show Within Distance
+                    <div class='col-sm-6'>
+                        {{ dist_form.as_table }}
+                    </div>
+                    <div class='col-sm-2'>
+                        <button class='btn btn-sm' style="border-radius:0;background-color:rgb(112,112,112);color:white;" type='submit'>Refresh</button>
+                    </div>
                 </div>
-            </div>
+            </form>
+            {% if requests %}
+            <table class="table" style="margin-top:30px;">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Distance</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request, distance, own in requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ distance }}km</td>
+                        <td>{{ request.request_details }}</td>
+                        <td>
+                            {% if request.isApproved %}
+                            {% if request.isClosed %}
+                            {% if own %}
+                            Waiting for customer to mark complete.
+                            {% else %}
+                            Closed.
+                            {% endif %}
+                            {% else %}
+                            Awaiting Response...
+                            {% endif %}
+                            {% else %}
+                            Open
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if own %}
+                            {% if not request.isClosed %}
+                            <a class="btn btn-secondary" href="{% url 'withdraw_response' request.id %}">
+                                Withdraw</button>
+                                {% endif %}
+                                {% else %}
+                                {% if not request.isClosed %}
+                                <a class="btn" style="border-radius:0;border-width:3px;border-color:#FF8000;background-color:white;color:#FF8000;" href="{% url 'respond' request.id %}">
+                                    Respond</button>
+                                    {% endif %}
+                                    {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
         </div>
     </div>
+
+    
+
+    <h5>Your Account</h5>
+    <div class="card border-custom" id="card2">
+        <div class="card-body text-white">
+            Check your past assistance responses, and transaction logs. <br />
+            <a href="{% url 'profile' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:#FF8000;margin-top:15px;color:white">View &raquo;</a>
+        </div>
+    </div>
+
+
 </div>
 
 {% endblock %}

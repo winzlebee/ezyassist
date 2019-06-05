@@ -2,69 +2,238 @@
 
 {% block scripts %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .profile-pic {
+        width: 250px;
+        height: 250px;
+        display: block;
+    }
+
+    img.profile-pic {
+        max-width: 100%;
+        height: 100%;
+    }
+
+    .file-upload {
+        display: none;
+    }
+
+    .circle {
+        border-radius: 1000px !important;
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        border: 0px solid rgba(112, 112, 112, 1);
+        overflow: hidden;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        border-radius: 50%;
+    }
+
+    .p-image {
+        position: relative;
+        margin: 0 auto;
+        color: #666666;
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+        .p-image:hover {
+            transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        }
+
+    .upload-button {
+        font-size: 1em;
+        margin-top: 295px;
+    }
+
+    .upload-button:hover {
+        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        color: #999;
+    }
+
+    .card {
+        border-radius: 0;
+        border-color: rgb(112,112,112);
+        border-width: 2px;
+        margin-top: 50px;
+        margin-left: 30px;
+    }
+
+    .content {
+        padding-top: 20px;
+        padding-left: 30px;
+    }
+
+    h5 {
+        color: #FF8000;
+ 
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        display: block;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        padding: 4px;
+        width: 88%;
+        height: 32px;
+        border: none;
+        border-bottom: 1px solid #AAA;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        transition: 0.2s ease;
+        border-radius: 0;
+        margin-left: 20px;
+        margin-right: 20px;
+        color: #999;
+    }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            border-bottom: 2px solid #ff8000;
+            color: #999;
+            transition: 0.2s ease;
+        }
+
+        .fields {
+            color: #999;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-bottom: 25px;
+            margin-top:25px;
+        }
+</style>
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <table border="0" width="100%">
+        <tr>
+            <td valign="top" width="30%" style="text-align:center;">
+                <div style="position:fixed;">
+                    <div class="circle mt-5" style="margin:0 auto;">
+                        <!-- User Profile Image -->
+                        <img class="profile-pic" src="http://dev.debut.careers/wp-content/uploads/2017/04/Profile-Fallback-01-01.png?x28372">
 
-
-<div class='container'>
-<form action='{% url 'profile' %}' method="POST">
-    {% csrf_token %}
-        <div class='col p-5'>
-            <div class='form-group'>
-                {% if form.address.errors %}<div class='alert alert-danger' role='alert'>{{ form.address.errors }}</div>{% endif %}
-                <label for="{{ form.address.id_for_label }}">Address</label>
-                {{ form.address }}
-            </div>
-            <div class='form-group'>
-                {% if form.registration.errors %}<div class='alert alert-danger' role='alert'>{{ form.registration.errors }}</div>{% endif %}
-                <label for="{{ form.registration.id_for_label }}">Car Registration</label>
-                {{ form.registration }}
-            </div>
-            {% if not form.isServicer.value %}
-            <div class="card" id='plansCard' style="width: 18rem;">
-                <div class="card-header">
-                    Change Plan
-                </div>
-                <ul class="list-group list-group-flush">
-                    {% for pricing in pricings %}
-                    <li class="list-group-item"><input class="form-check-input" type="radio" name="{{ form.subscription.html_name }}" value="{{ pricing.id }}" {% if pricing.id == form.subscription.initial %}checked {% endif %}required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% else %}
-            <input type="hidden" name="{{ form.subscription.html_name }}" value="0" />
-            <input type="hidden" name="{{ form.isServicer.html_name }}" value="true" />
-            <a href="{{ userProfile.optionalDocument.document.url }}" class='btn btn-primary'>View Documentation &raquo;</a>
-            <div class="m-5">
-            {% endif %}
-            <div>
-                <h2>Reviews</h2>
-                {% if reviews %}
-                {% for assistance_review, range in reviews %}
-                    <div class="card w-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ assistance_review.creator.get_full_name }}</h5>
-                            <p class="card-text">{{ assistance_review.text_rating }}</p>
-                            {% for star in range %}
-                            <span class="fa fa-star"></span>
-                            {% endfor %}
-                        </div>
+                        <!-- Default Image -->
+                        <!-- <i class="fa fa-user fa-5x"></i> -->
                     </div>
-                {% endfor %}
-                {% else %}
-                    <p>No reviews to display</p>
-                {% endif %}
-            </div>
-    </div>
-    {% if hasErrors %}
-    <div class='alert alert-warning'>
-        Invalid value specified.
-    </div>
-    {% endif %}
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <a class="btn btn-secondary" href="{% url 'dash' %}">Cancel</a>
-</form>
+                    <div class="p-image">
+                        <button class="btn upload-button" style="border:1; background-color:rgb(112,112,112);color:white;border-radius:0;position:fixed;margin-top:330px;margin-left:60px">Upload Photo</button>
+                        <input class="file-upload" type="file" accept="image/*" />
+                    </div>
+                </div>
+            </td>
+
+            <td valign="top">
+                <div class="card">
+                    <div class="content">
+                        <h5><b>About you</b></h5>
+                        <form action='{% url 'profile' %}' method="POST" style="padding-top:20px;margin-left:0;">
+                            {% csrf_token %}
+
+                            <div class='form-group'>
+                                {% if form.address.errors %}<div class='alert alert-danger' role='alert'>{{ form.address.errors }}</div>{% endif %}
+                                <label for="{{ form.address.id_for_label }}"><b>Address</b></label>
+                                <div class="fields">{{ form.address }}</div>
+                            </div>
+
+                            <div class='form-group'>
+                                {% if form.registration.errors %}<div class='alert alert-danger' role='alert'>{{ form.registration.errors }}</div>{% endif %}
+                                <label for="{{ form.registration.id_for_label }}"><b>Car Registration</b></label>
+                                <div class="fields">{{ form.registration }}</div>
+                            </div>
+                            {% if not form.isServicer.value %}
+
+                            <b>Change Plan</b>
+
+                            <ul class="list-group list-group-flush" style="padding-top:20px;">
+                                {% for pricing in pricings %}
+                                <li class="list-group-item"><input class="form-check-input" type="radio" name="{{ form.subscription.html_name }}" value="{{ pricing.id }}" {% if pricing.id == form.subscription.initial %}checked {% endif %}required><label class='form-check-label'>{{ pricing.name }}<small class='text-secondary'> ${{ pricing.yearlyPrice }}/Year</small></label></li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <input type="hidden" name="{{ form.subscription.html_name }}" value="0" />
+                            <input type="hidden" name="{{ form.isServicer.html_name }}" value="true" />
+                            <a href="{{ userProfile.optionalDocument.document.url }}" class='btn' style="border-radius:0;background-color:rgb(112,112,112);color:white;border-color:rgb(112,112,112);border-width:3px;">View Documentation &raquo;</a>
+                            <div class="m-5">
+                                {% endif %}
+
+                            </div>
+
+                            <h5 style="padding-top:40px; padding-left:30px;"><b>Reviews</b></h5>
+                            {% if reviews %}
+                            {% for assistance_review, range in reviews %}
+                            <div class="card w-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ assistance_review.creator.get_full_name }}</h5>
+                                    <p class="card-text">{{ assistance_review.text_rating }}</p>
+                                    {% for star in range %}
+                                    <span class="fa fa-star"></span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p style="padding-left:30px;">No reviews to display</p>
+                            {% endif %}
+
+                            {% if hasErrors %}
+                            <div class='alert alert-warning'>
+                                Invalid value specified.
+                            </div>
+                            {% endif %}
+
+
+                            <div class="buttons">
+                                <button type="submit" class="btn" style="background-color:white;border-color:#FF8000;border-radius:0;border-width:3px;color:#FF8000;">Submit</button>
+                                <a class="btn" style="border-radius:0;background-color:rgb(112,112,112);color:white;border-color:rgb(112,112,112);border-width:3px;" href="{% url 'dash' %}">Cancel</a>
+                            </div>
+
+                        </div>
+
+                    
+
+                    </form>
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
 </div>
+<script>
+    $(document).ready(function () {
+
+
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile-pic').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+
+        $(".upload-button").on('click', function () {
+            $(".file-upload").click();
+        });
+    });
+</script>
 
 {% endblock %}

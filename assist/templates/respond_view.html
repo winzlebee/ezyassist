@@ -1,21 +1,48 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+    <style>
+        h5 {
+            color: #FF8000;
+        }
+
+        .card {
+            background-color: rgb(112,112,112);
+            border-radius: 0;
+            margin-top:30px;
+        }
+       
+    </style>
+{% endblock %}
+
 {% block content %}
 
-
+<div class="jumbotron jumbotron-fluid bg-custom" style="background-color:#FF8000; background-size:270%;max-height:170px;">
+    <div class="container-fluid mt-0">
+        <h1 style="color:#fff" class="ml-5 align-middle">
+            <span itemprop="headline">RESPOND TO REQUEST</span>
+        </h1>
+    </div>
+</div>
 <div class='container'>
-    <h1>Respond to request</h1>
+
     <div>
-        <p class="sm">{{ request.request_details }}</p>
+        <h5>Request Details</h5>
+        <div class="card border-custom" >
+            <div class="card-body text-white">
+                <p class="sm">{{ request.request_details }}</p>
+            </div>
+        </div>
+
         <form action="{% url 'respond' request.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label>Enter your repair quote</label>
-                <input type="number" class="form-control mb-2 mr-sm-2" step=".01" placeholder="Quote Amount" />
+                <h5 style="margin-top:30px;margin-bottom:30px;">Enter your repair quote</h5>
+                <textarea class="form-control" id='infoText' name='request_details' style="height:100px;width:100%;border-radius:0;"></textarea>
                 <small class="form-text text-muted">Please read the description carefully. You can always withdraw later.</small>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="button" onClick="window.history.back();" class="btn btn-secondary">Go Back</button>
+            <button type="submit" class="btn" style="border-radius:0;border-width:3px;background-color:#FF8000;color:white">Submit</button>
+            <button type="button" onClick="window.history.back();" class="btn" style="border-radius:0;border-width:3px;background-color:rgb(112,112,112);color:white">Go Back</button>
         </form>
     </div>
 </div>
