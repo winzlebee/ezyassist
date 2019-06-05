@@ -48,10 +48,10 @@
         margin-top: 295px;
     }
 
-    .upload-button:hover {
-        transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
-        color: #999;
-    }
+        .upload-button:hover {
+            transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+            color: #999;
+        }
 
     .card {
         border-radius: 0;
@@ -68,7 +68,6 @@
 
     h5 {
         color: #FF8000;
- 
     }
 
     input[type="text"],
@@ -100,19 +99,20 @@
             transition: 0.2s ease;
         }
 
-        .fields {
-            color: #999;
-        }
+    .fields {
+        color: #999;
+    }
 
-        .buttons {
-            text-align: center;
-            margin-bottom: 25px;
-            margin-top:25px;
-        }
+    .buttons {
+        text-align: center;
+        margin-bottom: 25px;
+        margin-top: 25px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
+
 <div class="container">
     <table border="0" width="100%">
         <tr>
@@ -168,11 +168,11 @@
 
                             </div>
 
-                            <h5 style="padding-top:40px; padding-left:30px;"><b>Reviews</b></h5>
+                            <h5 style="padding-top:20px; padding-left:10px;"><b>Reviews</b></h5>
                             {% if reviews %}
                             {% for assistance_review, range in reviews %}
-                            <div class="card w-100">
-                                <div class="card-body">
+                            <div class="card" style="max-width:500px;margin-top:20px;margin-left:10px;">
+                                <div class="card-body" width="70%">
                                     <h5 class="card-title">{{ assistance_review.creator.get_full_name }}</h5>
                                     <p class="card-text">{{ assistance_review.text_rating }}</p>
                                     {% for star in range %}
@@ -197,9 +197,9 @@
                                 <a class="btn" style="border-radius:0;background-color:rgb(112,112,112);color:white;border-color:rgb(112,112,112);border-width:3px;" href="{% url 'dash' %}">Cancel</a>
                             </div>
 
-                        </div>
+                    </div>
 
-                    
+
 
                     </form>
 
@@ -235,5 +235,14 @@
         });
     });
 </script>
+
+
+
+
+
+
+
+
+
 
 {% endblock %}

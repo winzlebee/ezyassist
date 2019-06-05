@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{E3823215-15D7-4E0D-B107-73437F38971B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>_314project</RootNamespace>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Console</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="assist\admin.py" />
+    <Content Include="assist\apps.py" />
+    <Content Include="assist\forms.py" />
+    <Content Include="assist\migrations\0001_initial.py" />
+    <Content Include="assist\migrations\0002_auto_20190323_1608.py" />
+    <Content Include="assist\migrations\0003_assistanceapproval.py" />
+    <Content Include="assist\migrations\0004_auto_20190324_1515.py" />
+    <Content Include="assist\migrations\0005_userprofilemodel_registration.py" />
+    <Content Include="assist\migrations\__init__.py" />
+    <Content Include="assist\models.py" />
+    <Content Include="assist\templates\base.html" />
+    <Content Include="assist\templates\dash_view.html" />
+    <Content Include="assist\templates\index.html" />
+    <Content Include="assist\templates\lodge_view.html" />
+    <Content Include="assist\templates\profile_view.html" />
+    <Content Include="assist\templates\signup_view.html" />
+    <Content Include="assist\tests.py" />
+    <Content Include="assist\urls.py" />
+    <Content Include="assist\views.py" />
+    <Content Include="assist\__init__.py" />
+    <Content Include="ezyassist\settings.py" />
+    <Content Include="ezyassist\urls.py" />
+    <Content Include="ezyassist\wsgi.py" />
+    <Content Include="ezyassist\__init__.py" />
+    <Content Include="manage.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".git\config" />
+    <None Include=".git\description" />
+    <None Include=".git\HEAD" />
+    <None Include=".git\hooks\applypatch-msg.sample" />
+    <None Include=".git\hooks\commit-msg.sample" />
+    <None Include=".git\hooks\fsmonitor-watchman.sample" />
+    <None Include=".git\hooks\post-update.sample" />
+    <None Include=".git\hooks\pre-applypatch.sample" />
+    <None Include=".git\hooks\pre-commit.sample" />
+    <None Include=".git\hooks\pre-push.sample" />
+    <None Include=".git\hooks\pre-rebase.sample" />
+    <None Include=".git\hooks\pre-receive.sample" />
+    <None Include=".git\hooks\prepare-commit-msg.sample" />
+    <None Include=".git\hooks\update.sample" />
+    <None Include=".git\index" />
+    <None Include=".git\info\exclude" />
+    <None Include=".git\logs\HEAD" />
+    <None Include=".git\logs\refs\heads\master" />
+    <None Include=".git\logs\refs\remotes\origin\HEAD" />
+    <None Include=".git\objects\pack\pack-5af0edef1ba89af79cb1e6da219914ca30a12808.idx" />
+    <None Include=".git\objects\pack\pack-5af0edef1ba89af79cb1e6da219914ca30a12808.pack" />
+    <None Include=".git\packed-refs" />
+    <None Include=".git\refs\heads\master" />
+    <None Include=".git\refs\remotes\origin\HEAD" />
+    <None Include=".vs\EzyAssist\v15\.suo" />
+    <None Include="assist\fixtures\pricingmodels.json" />
+    <None Include="assist\migrations\__pycache__\0001_initial.cpython-37.pyc" />
+    <None Include="assist\migrations\__pycache__\0002_auto_20190323_1608.cpython-37.pyc" />
+    <None Include="assist\migrations\__pycache__\0003_assistanceapproval.cpython-37.pyc" />
+    <None Include="assist\migrations\__pycache__\0004_auto_20190324_1515.cpython-37.pyc" />
+    <None Include="assist\migrations\__pycache__\0005_userprofilemodel_registration.cpython-37.pyc" />
+    <None Include="assist\migrations\__pycache__\__init__.cpython-37.pyc" />
+    <None Include="assist\__pycache__\admin.cpython-37.pyc" />
+    <None Include="assist\__pycache__\apps.cpython-37.pyc" />
+    <None Include="assist\__pycache__\forms.cpython-37.pyc" />
+    <None Include="assist\__pycache__\models.cpython-37.pyc" />
+    <None Include="assist\__pycache__\urls.cpython-37.pyc" />
+    <None Include="assist\__pycache__\views.cpython-37.pyc" />
+    <None Include="assist\__pycache__\__init__.cpython-37.pyc" />
+    <None Include="db.sqlite3" />
+    <None Include="documents\exams-s1-2018-csit110.pdf" />
+    <None Include="ezyassist\__pycache__\settings.cpython-37.pyc" />
+    <None Include="ezyassist\__pycache__\urls.cpython-37.pyc" />
+    <None Include="ezyassist\__pycache__\wsgi.cpython-37.pyc" />
+    <None Include="ezyassist\__pycache__\__init__.cpython-37.pyc" />
+    <None Include="README.md" />
+    <None Include="TODO.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".git\objects\info\" />
+    <Folder Include=".git\refs\tags\" />
+    <Folder Include=".vs\314project\v15\" />
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

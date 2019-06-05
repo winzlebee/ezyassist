@@ -27,7 +27,6 @@
 </style>
 {% endblock %}
 
-
 {% block content %}
 <div class="jumbotron jumbotron-fluid bg-custom" style="background-color:#FF8000; background-size:270%;max-height:170px;">
     <div class="container-fluid mt-0">
@@ -61,16 +60,18 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Distance</th>
+                        <th scope="col">Plate Number</th>
                         <th scope="col">Description</th>
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for request, distance, own in requests %}
+                    {% for request, plateNum, distance, own in requests %}
                     <tr>
                         <td>{{ request.id }}</td>
                         <td>{{ distance }}km</td>
+                        <td>{{ plateNum }}</td>
                         <td>{{ request.request_details }}</td>
                         <td>
                             {% if request.isApproved %}
@@ -91,12 +92,13 @@
                             {% if own %}
                             {% if not request.isClosed %}
                             <a class="btn btn-secondary" href="{% url 'withdraw_response' request.id %}">
-                                Withdraw</button>
+                                Withdraw</a>
                                 {% endif %}
                                 {% else %}
                                 {% if not request.isClosed %}
-                                <a class="btn" style="border-radius:0;border-width:3px;border-color:#FF8000;background-color:white;color:#FF8000;" href="{% url 'respond' request.id %}">
-                                    Respond</button>
+                            <a class="btn" style="border-radius:0;border-width:3px;border-color:#FF8000;background-color:white;color:#FF8000;" href="{% url 'respond' request.id %}">
+                                Respond
+                            </a>
                                     {% endif %}
                                     {% endif %}
                         </td>
@@ -108,13 +110,11 @@
         </div>
     </div>
 
-    
-
     <h5>Your Account</h5>
     <div class="card border-custom" id="card2">
         <div class="card-body text-white">
             Check your past assistance responses, and transaction logs. <br />
-            <a href="{% url 'profile' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:#FF8000;margin-top:15px;color:white">View &raquo;</a>
+            <a href="{% url 'reports' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:#FF8000;margin-top:15px;color:white">View &raquo;</a>
 
         </div>
     </div>

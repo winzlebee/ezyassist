@@ -1,32 +1,70 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+<style>
+    .card-title {
+        color: #FF8000;
+    }
+
+    h5 {
+        color: #FF8000;
+    }
+
+    .card {
+        border-radius: 0;
+        border-width: 3px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        min-height: 120px;
+        font-size: 18px;
+    }
+
+    #card1 {
+        border-color: rgb(112,112,112);
+        font-size: 18px;
+    }
+
+    #card2 {
+        border-color: rgb(112,112,112);
+        background-color: rgb(112,112,112);
+    }
+
+</style>
+{% endblock %}
+
 
 {% block content %}
 
 
-<div class='container'>
-    <div class="card-group">
-    <div class="card">
-        <div class="card-body">
-        <h5 class="card-title">Service Report</h5>
-        <p class="card-text">View a list of all services that have been {% if isServicer %}performed by you{% else %}ordered for your vehicle{% endif %}.</p>
-        <p class="card-text"><small class="text-muted">Generated only when requested.</small></p>
-        <a href="{% url 'service_report' %}" class='btn btn-primary'>View &raquo;</a>
+<div class='container' style="margin-top:50px;">
+
+    <h5>Service Report</h5>
+    <div class="card border-custom" id="card2" valign="middle">
+        <div class="card-body text-white">
+            View a list of all services that have been {% if isServicer %}performed by you{% else %}ordered for your vehicle{% endif %}.<br />
+            <p class="card-text"><small class="text-muted">Generated only when requested.</small></p>
+            <a href="{% url 'service_report' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:#FF8000;margin-top:15px;">View &raquo;</a>
         </div>
     </div>
-    <div class="card">
+
+
+    <h5>Payment History</h5>
+    <div class="card border-custom" id="card3" valign="middle">
         <div class="card-body">
-        <h5 class="card-title">Payment History</h5>
-        <p class="card-text">View a report of all payments that have been processed for your account.</p>
-        <p class="card-text"><small class="text-muted">Linked directly to payment services.</small></p>
-        <a href="{% url 'payment_report' %}" class='btn btn-secondary'>View &raquo;</a>
+            View a report of all payments that have been processed for your account.<br />
+            <p class="card-text"><small class="text-muted">Generated only when requested.</small></p>
+            <a href="{% url 'payment_report' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:rgb(112,112,112);margin-top:15px;">View &raquo;</a>
+
         </div>
-    </div>
+
     </div>
     <div class="mt-5">
-        <a href="{% url 'dash' %}" class="btn btn-primary btn-lg">Dashboard</a>
-        <a href="#" onClick="window.history.back();" class="btn btn-secondary btn-lg">Go Back</a>
+        <a href="{% url 'dash' %}" class="btn" style="border-radius:0;border-width:3px;background-color:#FF8000;color:white">Dashboard</a>
+        <a href="#" onClick="window.history.back();" class="btn" style="border-radius:0;border-width:3px;background-color:rgb(112,112,112);color:white">Go Back</a>
     </div>
 </div>
+
+
+    
 
 {% endblock %}

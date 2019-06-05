@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
 {% block scripts %}
-    <style>
-        h5 {
-            color: #FF8000;
-        }
+<style>
+    h5 {
+        color: #FF8000;
+    }
 
-        .card {
-            background-color: rgb(112,112,112);
-            border-radius: 0;
-            margin-top:30px;
-        }
-       
-    </style>
+    .card {
+        background-color: rgb(112,112,112);
+        border-radius: 0;
+        margin-top: 30px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +27,7 @@
 
     <div>
         <h5>Request Details</h5>
-        <div class="card border-custom" >
+        <div class="card border-custom">
             <div class="card-body text-white">
                 <p class="sm">{{ request.request_details }}</p>
             </div>
@@ -39,8 +38,8 @@
             <div class="form-group">
 
                 <h5 style="margin-top:30px;margin-bottom:30px;">Enter your repair quote</h5>
-                <textarea class="form-control" id='infoText' name='request_details' style="height:100px;width:100%;border-radius:0;"></textarea>
-                
+                <input name="quote" type="number" class="form-control mb-2 mr-sm-2" step=".01"style="height:100px;width:100%;border-radius:0;" placeholder="Quote Amount" />
+
                 <small class="form-text text-muted">Please read the description carefully. You can always withdraw later.</small>
             </div>
             <button type="submit" class="btn" style="border-radius:0;border-width:3px;background-color:#FF8000;color:white">Submit</button>

@@ -29,10 +29,9 @@
         border-color: #FF8000;
         background-color: white;
     }
-
-
 </style>
 {% endblock %}
+
 
 {% block content %}
 <div class="jumbotron jumbotron-fluid bg-custom" style="background-color:#FF8000; background-size:270%;max-height:170px;">
@@ -90,24 +89,28 @@
         </div>
     </div>
 
-
+    {% if requests|length == 0 %}
     <h5>Lodge a Request</h5>
+
     <div class="card border-custom" id="card2" valign="middle">
         <div class="card-body text-white">
             Tell us your location and we'll send you assistance. <br />
             <a href="{% url 'lodge' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:#FF8000;margin-top:15px;">Lodge &raquo;</a>
         </div>
     </div>
-
+    {% endif %}
 
     <h5>Your Account</h5>
     <div class="card border-custom" id="card3" valign="middle">
         <div class="card-body">
-            Check out past calls and what you've done in the past <br />
-            <a href="{% url 'profile' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:rgb(112,112,112);margin-top:15px;">View &raquo;</a>
-        
-    </div>
+            Check out your payment and service history. <br />
+            <a href="{% url 'reports' %}" class='btn border-custom bg-custom text-white' style="min-width:90px;border-radius:0;background-color:rgb(112,112,112);margin-top:15px;">View &raquo;</a>
 
+        </div>
+
+    </div>
 </div>
 
+
 {% endblock %}
+

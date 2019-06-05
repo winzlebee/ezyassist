@@ -1,0 +1,2 @@
+C:\Users\Jamie\ezyassist\obj\x86\Debug\314project.vbprojAssemblyReference.cache
+C:\Users\Jamie\ezyassist\obj\x86\Debug\314project.vbproj.CoreCompileInputs.cache
