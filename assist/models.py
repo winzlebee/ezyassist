@@ -57,9 +57,12 @@ class AssistanceApproval(models.Model):
     repairer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
 
-    request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE)
+    quote = models.DecimalField(decimal_places=2, max_digits=6)
+    request = models.OneToOneField(AssistanceRequest, on_delete=models.CASCADE, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
 
 # A review left for a user (either from a customer or an assistance professional)
@@ -84,7 +87,7 @@ class AssistanceReview(models.Model):
     star_rating = models.IntegerField(default=5)
 
     def __str__(self):
-        return creator.name + "->" + target.name + ": " + self.star_rating + ", " + self.text_rating
+        return self.creator.get_full_name() + "->" + self.target.get_full_name() + ": " + str(self.star_rating) + ", " + self.text_rating
 
 class PricingModel(models.Model):
     name = models.CharField(max_length=50)
@@ -107,3 +110,6 @@ class UserProfileModel(models.Model):
     isServicer = models.BooleanField(default=False)
     subscription = models.IntegerField(default=0)
     optionalDocument = models.OneToOneField(Document, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.user.get_full_name()

@@ -37,13 +37,18 @@
         <form action="{% url 'respond' request.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
+
                 <h5 style="margin-top:30px;margin-bottom:30px;">Enter your repair quote</h5>
                 <textarea class="form-control" id='infoText' name='request_details' style="height:100px;width:100%;border-radius:0;"></textarea>
+                
                 <small class="form-text text-muted">Please read the description carefully. You can always withdraw later.</small>
             </div>
             <button type="submit" class="btn" style="border-radius:0;border-width:3px;background-color:#FF8000;color:white">Submit</button>
             <button type="button" onClick="window.history.back();" class="btn" style="border-radius:0;border-width:3px;background-color:rgb(112,112,112);color:white">Go Back</button>
         </form>
+        {% if errors %}
+        <div class="alert alert-primary">Please enter a quote.</div>
+        {% endif %}
     </div>
 </div>
 

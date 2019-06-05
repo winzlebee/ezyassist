@@ -145,7 +145,13 @@ def view_responses(request, request_pk=None):
 
     for service_request in assistance_approvals:
         relevant_reviews = AssistanceReview.objects.filter(target=service_request.repairer)
-        request_array.append((service_request, round(relevant_reviews.aggregate(Avg('star_rating'))['star_rating__avg'], 2), relevant_reviews.count()))
+        
+        if relevant_reviews:
+            review_average = round(relevant_reviews.aggregate(Avg('star_rating'))['star_rating__avg'], 2)
+        else:
+            review_average = 0
+        
+        request_array.append((service_request, review_average, relevant_reviews.count()))
 
     view_responses_template = loader.get_template("responses_view.html")
     context = {
@@ -177,18 +183,103 @@ def respond_view(request, respond_pk=None):
     # Use the respond_pk to create an AssistanceResponse for a request for the user
     relevantRequest = AssistanceRequest.objects.get(id=respond_pk);
 
+    context = {"request" : relevantRequest }
+
     if request.method == "POST":
         # Check the service request came from the specified user
-        assistanceResponse = AssistanceApproval(repairer=request.user, request=relevantRequest)
-        assistanceResponse.save()
+        response_form = CreateApprovalForm(request.POST)
 
-        return HttpResponseRedirect(reverse('dash'))
+        if response_form.is_valid():
+            assistanceResponse = response_form.save()
+
+            assistanceResponse.repairer = request.user
+            assistanceResponse.request = relevantRequest
+            assistanceResponse.save()
+
+            return HttpResponseRedirect(reverse('dash'))
+        else:
+            context['errors'] = True
 
     # Otherwise, we display the form related to responding to requests
     response_template = loader.get_template("respond_view.html")
 
-    return HttpResponse(response_template.render({"request" : relevantRequest }, request))
+    return HttpResponse(response_template.render(context, request))
 
+@login_required
+def reports_view(request):
+    user_model = UserProfileModel.objects.get(user=request.user)
+    reports_template = loader.get_template("generate_reports_view.html")
+
+    return HttpResponse(reports_template.render({"isServicer" : user_model.isServicer}, request))
+
+@login_required
+def payment_report_view(request):
+    # Get the request history corresponding to this customer
+    user_profile = UserProfileModel.objects.get(user=request.user)
+
+    payments_list = []
+    totalCost = 0
+
+    if user_profile.isServicer:
+
+        # If it's a servicer, we just aggregate all service approval costs
+        service_approvals = AssistanceApproval.objects.filter(repairer=request.user, is_approved=True)
+        if service_approvals:
+            for approval in service_approvals:
+                payments_list.append((approval.request.lodge_time, approval.quote, True))
+                totalCost += approval.quote
+        
+    else:
+        # A customer however requires we aggregate them and assign them a value depending on if they are covered by the plan.
+        service_requests = AssistanceRequest.objects.filter(creator=request.user, is_finalized=True).order_by('-lodge_time')
+        relevant_subscription = PricingModel.objects.get(id=(user_profile.subscription))
+        if service_requests:
+            countForYear = 0
+            prevYear = service_requests[0].lodge_time.year
+            for service_request in service_requests:
+                # Get the AssistanceApproval corresponding to this request
+                relevant_approval = AssistanceApproval.objects.get(request=service_request, is_approved=True)
+                
+                # Aggregate all the times the request has been made for this year and discount them
+                flag = countForYear < relevant_subscription.numCallouts
+
+                if service_request.lodge_time.year != prevYear:
+                    countForYear = 0
+
+                countForYear += 1
+
+                payments_list.append((service_request.lodge_time, relevant_approval.quote, flag))
+                totalCost += relevant_approval.quote
+
+    template = loader.get_template("payment_report_view.html")
+    context = {
+        "isServicer" : user_profile.isServicer,
+        "payments" : payments_list,
+        "totalCost" : totalCost
+    }
+
+    return HttpResponse(template.render(context, request))
+
+@login_required
+def service_report_view(request):
+    user_profile = UserProfileModel.objects.get(user=request.user)
+    template = loader.get_template("service_report_view.html")
+
+    service_entries = []
+    if user_profile.isServicer:
+        relevant_reports = AssistanceApproval.objects.filter(repairer=request.user, is_approved=True)
+        for report in relevant_reports:
+            if report.request.is_finalized:
+                service_entries.append((report.request.lodge_time, report.quote, report.request.request_details))
+    else:
+        relevant_requests = AssistanceRequest.objects.filter(creator=request.user, is_finalized=True)
+        for ass_request in relevant_requests:
+            r_approval = AssistanceApproval.objects.get(request=ass_request)
+            service_entries.append((ass_request.lodge_time, r_approval.quote, ass_request.request_details))
+
+    service_entries = sorted(service_entries, key=lambda req: req[0], reverse=True)
+
+    return HttpResponse(template.render({'entries' : service_entries}, request))
 
 @login_required
 def withdraw_response_view(request, request_pk=None):
@@ -243,13 +334,14 @@ def dash_view(request):
         matchingRequests = []
 
         for r in AssistanceRequest.objects.all():
+            plateNum = UserProfileModel.objects.get(user=r.creator).registration
             if success_flag:
                 dist = haversine(s_latitude, s_longitude, r.latitude, r.longitude)
                 if dist < targetDistance and not r.isFinalized():
-                    matchingRequests.append((r, round(dist, 2), r.isRespondedBy(request.user)))
+                    matchingRequests.append((r, plateNum, round(dist, 2), r.isRespondedBy(request.user)))
             elif not r.isFinalized():
                 # Handle the case where we don't get the data
-                matchingRequests.append((r, 0, r.isRespondedBy(request.user)))
+                matchingRequests.append((r, plateNum, 0, r.isRespondedBy(request.user)))
 
 
         context['requests'] = sorted(matchingRequests, key=lambda req: req[1])
@@ -259,7 +351,7 @@ def dash_view(request):
         return HttpResponse(loader.get_template('dash_view.html').render(context, request))
 
 def getRatingsArray(user):
-    assistance_reviews = AssistanceReview.objects.filter(target=user)
+    assistance_reviews = AssistanceReview.objects.filter(target=user).order_by('-id')
 
     ass_array = []
     for review in assistance_reviews:

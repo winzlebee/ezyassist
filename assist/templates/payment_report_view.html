@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class='container'>
+    <h1>Payment History Report</h1>
+    {% if payments %}
+    <table class="table">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date/Time</th>
+        <th scope="col">Amount</th>
+        {% if isServicer %}
+        <th scope="col">Payment Processed</th>
+        {% else %}
+        <th scope="col">Paid by Plan</th>
+        {% endif %}
+        </tr>
+    </thead>
+    {% for date, amount, plan in payments %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>
+      {% ifchanged date.date %} {{ date.date }} <br /> {% endifchanged %}
+      {{ date|date:"P" }}
+      </td>
+      <td>${{ amount }}</td>
+      <td>{{ plan|yesno }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <th scope="row">Total</th>
+      <td>{{ entries|first|first|date:'F' }}</td>
+      <td>${{ totalCost }}</td>
+    </tr>
+    </table>
+    {% else %}
+    <p>No entries to display.</p>
+    {% endif %}
+    <div class="mt-5">
+        <a href="{% url 'dash' %}" class="btn btn-primary btn-lg">Dashboard</a>
+        <a href="#" onClick="window.history.back();" class="btn btn-secondary btn-lg">Go Back</a>
+    </div>
+</div>
+
+{% endblock %}
